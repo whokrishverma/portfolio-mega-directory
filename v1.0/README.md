@@ -1,4 +1,4 @@
-# Krish Verma - Portfolio
+# Krish Verma - Portfolio 
 
 A static portfolio site: plain HTML, CSS and JavaScript. No build step, no dependencies.
 Open `index.html` in a browser (double-click works), or serve the folder with any static server.
