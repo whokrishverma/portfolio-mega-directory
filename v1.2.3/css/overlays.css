@@ -1,0 +1,38 @@
+/* overlays.css
+   Shortcuts popup, terminal popup and toast message. */
+
+/* Overlays */
+.overlay { position: fixed; inset: 0; z-index: 50; background: var(--overlay); display: grid; place-items: center; padding: 1rem; animation: viewIn .18s ease both; }
+.overlay { backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+.sc-modal { width: 100%; max-width: 28rem; border-radius: 1.05rem; border: 1px solid var(--border-strong); box-shadow: var(--shadow);
+  background: color-mix(in srgb, var(--fg) 3%, var(--bg)); overflow: hidden; }
+.sc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.65rem 1.7rem 1.35rem; border-bottom: 1px solid var(--border-strong); }
+.sc-head h2 { font-family: inherit; font-weight: 500; font-size: 1.22rem; line-height: 1.25; color: var(--hl); }
+.sc-head p { margin-top: .75rem; font-size: .98rem; color: var(--muted); line-height: 1.4; }
+.sc-close { display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; margin: -.55rem -.5rem 0 0; border-radius: .75rem; color: var(--muted); border: 1px solid transparent; transition: color .15s ease, background-color .15s ease; }
+.sc-close:hover { color: var(--hl); background: var(--surface); }
+.sc-close:focus-visible { outline: 2px solid color-mix(in srgb, var(--fg) 70%, transparent); outline-offset: 2px; color: var(--hl); background: var(--bg); border-color: var(--border-strong); border-radius: .75rem; }
+.sc-rows { list-style: none; padding: 0 .7rem; }
+.sc-item { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.05rem 1rem; border-bottom: 1px solid var(--border); }
+.sc-item:last-child { border-bottom: 0; }
+.sc-name { font-size: 1.1rem; color: var(--hl); line-height: 1.3; }
+.sc-desc { font-size: .9rem; color: var(--muted); margin-top: .15rem; line-height: 1.35; }
+.sc-keys { display: flex; align-items: center; gap: .4rem; flex: none; }
+.sc-keys .then { font-size: .72rem; color: var(--muted); }
+.sc-keys kbd { min-width: 2.25rem; height: 2.05rem; padding: 0 .5rem; border-radius: .55rem; border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--fg) 7%, transparent); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: .98rem; color: var(--hl); }
+.sc-foot { border-top: 1px solid var(--border-strong); padding: 1.15rem 1.7rem 1.3rem; font-size: .95rem; color: var(--muted); }
+.sc-foot b { color: var(--hl); font-weight: 500; }
+.modal { width: 100%; max-width: 30rem; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 1rem; box-shadow: var(--shadow); padding: 1.2rem 1.3rem; }
+.modal h2 { font-size: 1.5rem; color: var(--hl); margin-bottom: .9rem; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; }
+.term { max-width: 40rem; background: #0d0d0d; color: #d7d9e2; border-color: rgba(255,255,255,.14); padding: 0; overflow: hidden; }
+.term-bar { display: flex; align-items: center; gap: .4rem; padding: .7rem .9rem; border-bottom: 1px solid rgba(255,255,255,.08); font-size: .82rem; color: #8a8d99; }
+.term-bar i { width: .65rem; height: .65rem; border-radius: 50%; background: #3a3d4b; }
+.term-bar span { margin-left: .5rem; }
+.term-out { height: 17rem; overflow-y: auto; padding: .9rem 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; line-height: 1.55; white-space: pre-wrap; }
+.term-out .cmd { color: #f4f4f8; }
+.term-out .dim { color: #7c7f8d; }
+.term-in { display: flex; gap: .55rem; padding: .7rem 1rem .9rem; border-top: 1px solid rgba(255,255,255,.08); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
+.term-in input { flex: 1; background: none; border: 0; color: #f4f4f8; font: inherit; outline: none; }
+.toast { position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%); z-index: 60; background: var(--fg); color: var(--bg); padding: .6rem 1rem; border-radius: .7rem; font-size: .92rem; box-shadow: var(--shadow); max-width: calc(100vw - 2rem); animation: viewIn .18s ease both; }

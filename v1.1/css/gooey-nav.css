@@ -1,0 +1,109 @@
+/* gooey-nav.css
+   Liquid "goo" highlight for the home/about/writing pills (js/gooey-nav.js).
+   Loads after layout.css and overrides its plain .pill.active fill.
+   The blur+contrast blend trick reads correctly on a dark backdrop, so it's
+   flipped (multiply/white) under the light theme instead of lighten/black. */
+
+.nav-left { position: relative; }
+
+.pill.active { background: var(--hl); color: var(--bg); }
+
+.gooey-effect {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  border-radius: .8rem;
+}
+
+.gooey-text {
+  z-index: 2;
+  color: var(--bg);
+  font-size: 1.05rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.gooey-text.active { opacity: 1; }
+
+.gooey-filter {
+  filter: blur(7px) contrast(22) blur(0);
+  mix-blend-mode: multiply;
+}
+.gooey-filter::before {
+  content: '';
+  position: absolute;
+  inset: -75px;
+  z-index: -2;
+  background: #fff;
+}
+.gooey-filter::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--hl);
+  border-radius: .8rem;
+  transform: scale(0);
+  opacity: 0;
+  z-index: -1;
+}
+.gooey-filter.active::after { animation: gooeyPillIn .3s ease both; }
+@keyframes gooeyPillIn { to { transform: scale(1); opacity: 1; } }
+
+[data-theme="dark"] .gooey-filter { mix-blend-mode: lighten; }
+[data-theme="dark"] .gooey-filter::before { background: #000; }
+
+.gooey-particle, .gooey-point {
+  display: block;
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  transform-origin: center;
+}
+.gooey-particle {
+  --time: 5s;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  animation: gooeyParticle var(--time) ease 1 -350ms;
+}
+.gooey-point {
+  background: var(--color);
+  opacity: 1;
+  animation: gooeyPoint var(--time) ease 1 -350ms;
+}
+
+@keyframes gooeyParticle {
+  0% {
+    transform: rotate(0deg) translate(var(--start-x), var(--start-y));
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.55, 0, 1, .45);
+  }
+  70% {
+    transform: rotate(calc(var(--rotate) * .5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
+    opacity: 1;
+    animation-timing-function: ease;
+  }
+  85% {
+    transform: rotate(calc(var(--rotate) * .66)) translate(var(--end-x), var(--end-y));
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * .5), calc(var(--end-y) * .5));
+    opacity: 1;
+  }
+}
+@keyframes gooeyPoint {
+  0% { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(.55, 0, 1, .45); }
+  25% { transform: scale(calc(var(--scale) * .25)); }
+  38% { opacity: 1; }
+  65% { transform: scale(var(--scale)); opacity: 1; animation-timing-function: ease; }
+  85% { transform: scale(var(--scale)); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}

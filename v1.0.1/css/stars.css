@@ -1,0 +1,102 @@
+/* stars.css
+   Ambient star field in the two side gutters (light theme only).
+   Nothing here touches typography, layout, colours or existing components. */
+
+/* ---------- Tuning knobs ---------- */
+:root {
+  /* Half the width of the central content box (.container max-width / 2).
+     Keep this in sync with .container in base.css. */
+  --star-content-half: 28.25rem;
+  /* Breathing room between the content edge and where stars may start. */
+  --star-gap: 1rem;
+  /* Ink colour of a star. */
+  --star-color: 23, 24, 28;
+  /* Global dimmer for the whole effect (0 = invisible, 1 = as generated). */
+  --star-field-opacity: 1;
+}
+
+/* ---------- Field + zones ---------- */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                 /* same layer strategy as .bg -> always behind content */
+  pointer-events: none;
+  display: none;               /* dark theme / unsupported widths: fully off */
+  opacity: var(--star-field-opacity);
+  contain: strict;             /* keeps paint work inside the element */
+}
+
+/* Light theme only. */
+:root[data-theme="light"] .starfield { display: block; }
+
+.star-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(50vw - var(--star-content-half) - var(--star-gap));
+  overflow: hidden;            /* hard clip: nothing escapes a zone */
+  pointer-events: none;
+}
+
+.star-zone--left  { left: 0; }
+.star-zone--right { right: 0; }
+
+/* ---------- Opacity gradient ----------
+   Strongest at the outer edge, smoothly fading to near-nothing at the
+   inner edge that faces the central content. No hard boundary anywhere. */
+.star-zone--left {
+  -webkit-mask-image: linear-gradient(to right,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 18%, rgba(0,0,0,.66) 42%,
+    rgba(0,0,0,.34) 66%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to right,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 18%, rgba(0,0,0,.66) 42%,
+    rgba(0,0,0,.34) 66%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+}
+.star-zone--right {
+  -webkit-mask-image: linear-gradient(to left,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 18%, rgba(0,0,0,.66) 42%,
+    rgba(0,0,0,.34) 66%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to left,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,.92) 18%, rgba(0,0,0,.66) 42%,
+    rgba(0,0,0,.34) 66%, rgba(0,0,0,.12) 84%, rgba(0,0,0,0) 100%);
+}
+
+/* ---------- A single star ---------- */
+.star {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  background: rgba(var(--star-color), 1);
+  opacity: var(--o-min);
+  will-change: transform, opacity;
+  animation: starDrift var(--dur) ease-in-out var(--delay) infinite;
+  /* minimalist 4-point sparkle */
+  -webkit-clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+}
+
+/* a minority are 5-point, for variety */
+.star.star--five {
+  -webkit-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+@keyframes starDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1);    opacity: var(--o-min); }
+  50%  { transform: translate3d(var(--dx), var(--dy), 0) scale(1.08); opacity: var(--o-max); }
+  100% { transform: translate3d(0, 0, 0) scale(1);    opacity: var(--o-min); }
+}
+
+/* ---------- Responsive ---------- */
+/* Narrower gutters: keep the zones, JS thins the star count automatically. */
+@media (max-width: 1200px) {
+  :root { --star-gap: .75rem; }
+}
+/* Not enough side space to frame anything -> switch the effect off entirely. */
+@media (max-width: 900px) {
+  :root[data-theme="light"] .starfield { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star { animation: none !important; opacity: var(--o-min); }
+}

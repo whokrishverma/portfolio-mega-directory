@@ -1,0 +1,241 @@
+/* pages.css
+   About page and Writing page. */
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 10.4rem 1fr; column-gap: 1rem; margin-top: 3.4rem; }
+.about-grid + .about-grid { margin-top: 4.2rem; }
+.about-label { color: var(--muted); font-size: 1.05rem; padding-top: .1rem; }
+.about-body { font-size: .96rem; line-height: 1.6; color: var(--fg); }
+.about-body p + p { margin-top: .85rem; }
+.about-body h3 { display: flex; align-items: center; gap: .55rem; font-size: .96rem; font-weight: 400; margin-top: 1.4rem; margin-bottom: .55rem; }
+.about-body h3:first-child { margin-top: 0; }
+
+/* Writing */
+.writing-intro { margin-top: 2.1rem; font-size: 1.06rem; line-height: 1.64; color: var(--fg); }
+.writing-intro a { text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
+.posts { margin-top: 3.4rem; display: grid; gap: 2rem; }
+.post { display: flex; gap: 1.1rem; align-items: center;
+  transition: transform .25s cubic-bezier(.4,0,.2,1); transform: scale(1); transform-origin: center; will-change: transform; }
+.post:hover { transform: scale(.96); }
+.post:hover .post-title { text-decoration: underline; text-underline-offset: 3px; }
+.thumb { width: 5.3rem; height: 5.3rem; flex: none; border-radius: .55rem; overflow: hidden; background: var(--surface-2); }
+.thumb svg { width: 100%; height: 100%; }
+.post-title { font-size: 1.12rem; color: var(--hl); line-height: 1.35; }
+.post-desc { font-size: .96rem; color: var(--muted); line-height: 1.45; margin-top: .1rem; }
+.post-date { font-size: .86rem; color: var(--muted); margin-top: .35rem; }
+
+/* Resume */
+.resume-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.btn-download { display: inline-flex; align-items: center; gap: .5rem; height: 2.5rem; padding: 0 1.1rem; border-radius: .6rem;
+  background: var(--surface-2); color: var(--fg); font-size: .94rem; border: 1px solid var(--border); transition: background .15s ease; }
+.btn-download:hover { background: var(--surface-3); }
+.resume-disclaimer { margin-top: 1rem; font-size: .88rem; line-height: 1.5; color: var(--muted); }
+.resume-viewer { margin-top: 2.2rem; }
+.resume-frame-wrap { position: relative; height: 80vh; min-height: 32rem; border-radius: .9rem; overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface-2); }
+
+/* Floating rounded toolbar, docked at the top of the page area.
+   Deliberately a fixed dark skin (not theme tokens) so it reads the same
+   over the white page canvas in both light and dark site themes. */
+/* Two floating pills share one row at the top of the viewer: the main toolbar docks LEFT and the
+   Annotate pill docks RIGHT (same top offset and height). .resume-bars is click-through so only the
+   pills themselves catch the mouse. */
+.resume-bars { position: absolute; top: .9rem; left: .9rem; right: .9rem; z-index: 5;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; pointer-events: none; }
+.resume-toolbar { pointer-events: auto; min-width: 0; flex: 0 1 auto;
+  display: flex; align-items: center; gap: .55rem; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding: .5rem .95rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+  background: #19191b; }
+/* Annotate pill: a round button on its own; when toggled on, Marker / Highlighter / Undo / Redo appear to
+   its left (the pill is anchored to the right edge, so it grows leftwards). */
+.resume-annotate-bar { flex: none; padding: .5rem; gap: .35rem; overflow: visible; }
+.resume-annotate-tools[hidden], .resume-annotate-bar .resume-toolbar-sep[hidden] { display: none; }
+.resume-toolbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+@supports (backdrop-filter: blur(1px)) {
+  .resume-toolbar { background: rgba(20, 20, 22, .88); backdrop-filter: blur(14px); }
+}
+.resume-toolbar-group { display: flex; align-items: center; gap: .35rem; flex: none; }
+.resume-toolbar-sep { width: 1px; height: 1.3rem; background: rgba(255, 255, 255, .14); flex: none; }
+.resume-btn { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem;
+  flex: none; border-radius: 999px; border: 0; background: transparent; color: #f2f2f3;
+  cursor: pointer; transition: background .15s ease, opacity .15s ease; }
+.resume-btn:hover:not(:disabled) { background: rgba(255, 255, 255, .1); }
+.resume-btn:disabled { opacity: .3; cursor: default; }
+.resume-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .12); }
+.resume-btn-outline { border: 1px solid rgba(255, 255, 255, .28); }
+.resume-page-indicator { font-size: .85rem; color: #f2f2f3; white-space: nowrap; }
+
+/* Zoom percentage: a fixed-width pill (label centred between the - and + buttons) that opens a custom
+   dropdown styled like the toolbar. The menu lives in .resume-frame-wrap (not inside the toolbar, which
+   clips overflow) and is positioned under the pill by resume.js. */
+.resume-zoom-wrap { position: relative; display: inline-flex; align-items: center; }
+.resume-zoom-btn { position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 5.4rem; height: 1.9rem; padding: 0 1rem; border-radius: 999px; border: 0;
+  font-size: .85rem; color: #f2f2f3; background: rgba(255, 255, 255, .1); white-space: nowrap;
+  cursor: pointer; transition: background .15s ease; }
+.resume-zoom-btn:hover, .resume-zoom-btn[aria-expanded="true"] { background: rgba(255, 255, 255, .16); }
+.resume-zoom-chevron { position: absolute; right: .6rem; top: 50%; transform: translateY(-50%);
+  color: rgba(255, 255, 255, .55); pointer-events: none; transition: transform .18s ease; }
+.resume-zoom-btn[aria-expanded="true"] .resume-zoom-chevron { transform: translateY(-50%) rotate(180deg); }
+
+.resume-zoom-menu { position: absolute; z-index: 6; top: 0; left: 0; width: 7rem; margin: 0; padding: .35rem; list-style: none;
+  max-height: calc(100% - 5.5rem); overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;
+  border-radius: .9rem; border: 1px solid rgba(255, 255, 255, .1); background: #19191b;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .5); transform-origin: top center; animation: resumeZoomMenuIn .14s ease-out; }
+.resume-zoom-menu::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.resume-zoom-menu[hidden] { display: none; }
+@supports (backdrop-filter: blur(1px)) {
+  .resume-zoom-menu { background: rgba(20, 20, 22, .92); backdrop-filter: blur(14px); }
+}
+.resume-zoom-option { display: flex; align-items: center; gap: .5rem; padding: .3rem .6rem; border-radius: .55rem;
+  font-size: .85rem; color: rgba(242, 242, 243, .82); cursor: pointer; outline: none; user-select: none; }
+.resume-zoom-option:hover, .resume-zoom-option:focus-visible { background: rgba(255, 255, 255, .1); color: #f2f2f3; }
+.resume-zoom-option[aria-selected="true"] { background: rgba(255, 255, 255, .14); color: #fff; }
+.resume-zoom-check { flex: none; width: .8rem; opacity: 0; }
+.resume-zoom-option[aria-selected="true"] .resume-zoom-check { opacity: 1; }
+@keyframes resumeZoomMenuIn { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: none; } }
+
+/* Search + overflow menu popovers */
+.resume-search { position: relative; }
+.resume-search-panel { position: absolute; top: calc(100% + .5rem); right: 0; display: flex; align-items: center;
+  gap: .5rem; padding: .45rem .6rem; border-radius: .7rem; border: 1px solid rgba(255, 255, 255, .1);
+  background: #19191b; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); white-space: nowrap; }
+.resume-search-input { font-size: .86rem; color: #f2f2f3; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: .4rem; padding: .3rem .5rem; width: 10rem; }
+.resume-search-result { font-size: .78rem; color: rgba(255, 255, 255, .55); min-width: 3.4rem; }
+
+/* Annotate tools extend the same toolbar pill in place (not a separate popover),
+   so Marker / Highlighter / Undo / Redo appear inline once "Annotate" is toggled on. */
+#resumeToolMarker.resume-btn[aria-pressed="true"],
+#resumeToolHighlighter.resume-btn[aria-pressed="true"],
+#resumeToolEraser.resume-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .16); }
+
+/* Annotation drawing surface: sits above the text layer, only interactive while annotating */
+.resume-annotation-layer { position: absolute; inset: 0; touch-action: none; pointer-events: none; }
+.resume-frame-wrap.is-annotating .resume-annotation-layer { pointer-events: auto; cursor: crosshair; }
+.resume-frame-wrap.is-erasing .resume-annotation-layer { cursor: none; } /* the eraser ring is drawn on the canvas instead */
+
+.resume-body { position: absolute; inset: 0; display: flex; }
+.resume-page-area { position: relative; flex: 1; min-width: 0; overflow: auto; padding: 4.6rem 1rem 1.2rem; text-align: center;
+  scrollbar-width: none; -ms-overflow-style: none; }
+.resume-page-area::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Thumbnail sidebar */
+.resume-thumbs { flex: none; width: 8.6rem; overflow-y: auto; overflow-x: hidden; padding: 4.6rem .7rem 1rem;
+  border-right: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: .7rem;
+  scrollbar-width: thin; }
+.resume-thumb { display: block; padding: 0; border: 2px solid transparent; border-radius: .35rem; background: transparent;
+  cursor: pointer; text-align: center; }
+.resume-thumb canvas { display: block; width: 100%; height: auto; border-radius: .2rem; background: #fff; box-shadow: var(--shadow); }
+.resume-thumb-num { display: block; margin-top: .3rem; font-size: .74rem; color: var(--muted); }
+.resume-thumb.is-active { border-color: var(--hl); }
+.resume-thumb.is-active .resume-thumb-num { color: var(--hl); }
+@media (max-width: 640px) {
+  .resume-thumbs { position: absolute; inset: 0 auto 0 0; z-index: 4; box-shadow: var(--shadow); }
+}
+.resume-status { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: .94rem; }
+.resume-canvas { display: block; background: #fff; }
+.resume-page-inner { position: relative; display: inline-block; border-radius: .4rem; overflow: hidden;
+  box-shadow: var(--shadow); }
+
+/* Continuous/scroll mode: every page stacked vertically inside the same scrollable
+   page area, reusing the .resume-page-inner/.resume-canvas/.resume-text-layer/
+   .resume-annotation-layer look so pages match the single-page mode exactly. */
+.resume-continuous { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; padding-bottom: .4rem; }
+.resume-continuous[hidden] { display: none; }
+.resume-continuous .resume-page-inner { flex: none; }
+.resume-text-layer { position: absolute; inset: 0; overflow: hidden; line-height: 1; text-align: initial;
+  -webkit-text-size-adjust: none; text-size-adjust: none; }
+.resume-text-layer span, .resume-text-layer br { color: transparent; position: absolute; white-space: pre;
+  cursor: text; transform-origin: 0% 0%; }
+.resume-text-layer ::selection { background: rgba(59, 109, 240, .35); }
+.resume-text-layer ::-moz-selection { background: rgba(59, 109, 240, .35); }
+.resume-text-layer span.is-search-match { background: rgba(255, 214, 0, .55); border-radius: .12em;
+  box-shadow: 0 0 0 .08em rgba(255, 214, 0, .55); }
+
+/* Loadout */
+.loadout-sub { margin-top: .6rem; font-size: 1.06rem; color: var(--muted); }
+.loadout-filters { display: flex; align-items: center; gap: .4rem; margin-top: 1.8rem; }
+.loadout-filter { height: 2.5rem; padding: 0 1.1rem; border-radius: .7rem; font-size: .94rem; color: var(--muted);
+  background: transparent; transition: background .15s ease, color .15s ease; }
+.loadout-filter:hover { color: var(--fg); }
+.loadout-filter.is-active { background: var(--surface-3); color: var(--fg); }
+.loadout-shot { margin-top: 1.6rem; border-radius: .9rem; overflow: hidden; border: 1px solid var(--border); background: #0a0a0a; }
+.loadout-shot img { display: block; width: 100%; height: auto; }
+.loadout-shot-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+  aspect-ratio: 16 / 9; color: rgba(255, 255, 255, .4); font-size: .92rem; text-align: center; padding: 1rem; }
+.loadout-section { margin-top: 3.6rem; }
+.loadout-list { margin-top: 1.4rem; display: grid; gap: .55rem; }
+.loadout-row { display: flex; gap: .5rem; font-size: .96rem; line-height: 1.6; }
+.loadout-row dt { color: var(--fg); flex: none; }
+.loadout-row dd { color: var(--muted); }
+.loadout-browser-intro { margin-top: 1.4rem; font-size: .98rem; line-height: 1.6; color: var(--fg); }
+.loadout-browser-intro b { font-weight: 500; }
+.loadout-browser-intro code { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; font-size: .88em;
+  background: var(--surface-2); padding: .1rem .35rem; border-radius: .3rem; }
+.loadout-ext-list { margin-top: 1.3rem; padding-left: 1.3rem; display: grid; gap: .55rem; font-size: .96rem; color: var(--muted); }
+@media (max-width: 720px) {
+  .loadout-filters { flex-wrap: wrap; }
+  .loadout-row { flex-direction: column; gap: .1rem; }
+}
+
+/* Experience */
+.experience-intro { margin-top: .6rem; font-size: 1.06rem; color: var(--muted); }
+.timeline { margin-top: 2.6rem; display: grid; gap: 2.2rem; }
+.timeline-item { display: grid; grid-template-columns: 7rem 1fr; column-gap: 1.2rem; position: relative; }
+.timeline-item + .timeline-item::before { content: ""; position: absolute; left: calc(7rem + .6rem - .5px); top: -1.5rem; width: 1px; height: 1.5rem; background: var(--border-strong); }
+.timeline-meta { display: flex; align-items: flex-start; justify-content: space-between; padding-top: .2rem; }
+.timeline-period { font-size: .86rem; color: var(--muted); white-space: nowrap; }
+.timeline-dot { width: .55rem; height: .55rem; border-radius: 50%; background: var(--hl); margin-top: .3rem; flex: none; }
+.timeline-role { font-size: 1.02rem; color: var(--fg); }
+.timeline-org { font-size: .92rem; color: var(--muted); margin-top: .15rem; }
+.timeline-desc { margin-top: .5rem; font-size: .94rem; line-height: 1.6; color: var(--fg); }
+.experience-intro + .timeline { }
+.timeline + .btn-download { margin-top: 3rem; }
+
+/* Music */
+.music-intro { margin-top: .6rem; font-size: 1.06rem; color: var(--muted); }
+.music-now { margin-top: 2.2rem; display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.3rem; border-radius: .9rem;
+  border: 1px solid var(--border); background: var(--surface); transition: background .15s ease; }
+.music-now:hover { background: var(--surface-2); }
+.music-now-art { flex: none; display: grid; place-items: center; }
+.music-now-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.music-now-label { font-size: .8rem; color: var(--muted); }
+.music-now-track { font-size: 1rem; color: var(--fg); margin-top: .15rem; }
+.music-now-artist { font-size: .9rem; color: var(--muted); margin-top: .1rem; }
+.music-now-arrow { flex: none; color: var(--muted); }
+.music-grid { margin-top: 1.4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .8rem; }
+.music-card { display: flex; align-items: center; justify-content: space-between; gap: .5rem; height: 3.6rem; padding: 0 1.05rem;
+  border-radius: .7rem; background: var(--surface); border: 1px solid var(--border); font-size: .94rem; color: var(--fg); }
+.music-card--link { transition: background .15s ease; }
+.music-card--link:hover { background: var(--surface-2); }
+.music-card-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 640px) {
+  .timeline-item { grid-template-columns: 4.6rem 1fr; }
+}
+
+/* Projects */
+.projects-intro { margin-top: .85rem; font-size: 1.02rem; line-height: 1.6; color: var(--muted); }
+.projects-table { margin-top: 2.3rem; border: 1px solid var(--border); border-radius: .9rem; background: var(--bg); overflow: hidden; }
+.projects-row { display: grid; grid-template-columns: 12rem 1fr auto; align-items: center; gap: 1.5rem;
+  padding: 1.3rem 1.6rem; border-bottom: 1px solid var(--border); }
+.projects-row:last-child { border-bottom: 0; }
+.projects-row--head { padding-top: 1.05rem; padding-bottom: 1.05rem; }
+.projects-cell--project { font-size: .98rem; color: var(--fg); }
+.projects-cell--desc { font-size: .98rem; color: var(--muted); line-height: 1.55; }
+.projects-row--head .projects-cell { color: var(--muted); font-size: .92rem; }
+.projects-cell--actions { display: flex; align-items: center; justify-content: flex-end; gap: .55rem; }
+.projects-github, .projects-external { display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  height: 2.35rem; border-radius: .6rem; background: var(--surface-3); color: var(--fg);
+  font-size: .9rem; transition: background .15s ease; }
+.projects-github { padding: 0 .95rem; }
+.projects-github:hover, .projects-external:hover { background: var(--border-strong); }
+.projects-external { width: 2.35rem; flex: none; }
+@media (max-width: 640px) {
+  .projects-row { grid-template-columns: 1fr; row-gap: .55rem; }
+  .projects-row--head { display: none; }
+  .projects-cell--actions { justify-content: flex-start; }
+}
