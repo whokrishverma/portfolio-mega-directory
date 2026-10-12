@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Krish Verma</title>
+<link rel="icon" type="image/png" href="assets/media/favicon1.jpg">
+<meta name="description" content="Krish Verma - CSE (AIML) student and developer. Projects, writing and contact.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- KaTeX: renders math in writing posts. Loaded (not deferred) so it's ready before js/posts.js runs. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<!-- Styles: order matters, later files build on earlier ones -->
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/bento.css">
+<link rel="stylesheet" href="css/contact.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/post.css">
+<link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/overlays.css">
+<link rel="stylesheet" href="css/stars.css">
+</head>
+<body>
+<div id="cursorDot" aria-hidden="true"></div>
+<div class="bg" aria-hidden="true"></div>
+
+<div class="light-stars" id="lightStars" aria-hidden="true">
+  <div class="light-stars__zone light-stars__zone--left"></div>
+  <div class="light-stars__zone light-stars__zone--right"></div>
+</div>
+
+<div class="container">
+  <!-- ================= NAV ================= -->
+  <header class="nav">
+    <nav class="nav-left" aria-label="Primary">
+      <a class="pill" href="#/" data-route="/">home</a>
+      <a class="pill" href="#/about" data-route="/about">about</a>
+      <a class="pill" href="#/writing" data-route="/writing">writing</a>
+      <div class="menu-wrap">
+        <button class="pill menu-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuPanel">
+          menu
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:0.875rem;height:0.875rem"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dropdown" id="menuPanel" hidden>
+          <a href="#/projects" data-route="/projects">projects <span>home</span></a>
+          <a href="#/" data-scroll="contact">contact <span>home</span></a>
+          <a href="#/experience" data-route="/experience">experience <span>↗</span></a>
+          <a href="#/music" data-route="/music">music <span>↗</span></a>
+          <a href="#/loadout" data-route="/loadout">loadout <span>↗</span></a>
+
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <button class="shortcuts-btn" id="openShortcuts" aria-label="Keyboard shortcuts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.125rem;height:1.125rem"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>
+        <span class="label">shortcuts</span><kbd>?</kbd>
+      </button>
+      <button class="icon-btn click-sound" id="themeBtn" aria-label="Toggle theme">
+        <svg class="i-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="icon-btn click-sound" id="muteBtn" aria-label="Mute background music" aria-pressed="false" title="Mute background music">
+        <svg class="i-volume" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+        <svg class="i-muted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m17 9 4 6"/><path d="m21 9-4 6"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HOME ================= -->
+    <section class="view" data-view="/">
+      <h1 class="serif page-title">Krish Verma</h1>
+      <p class="hero-sub">19y/o developer, student from India</p>
+
+      <p class="hero-copy">
+        Hi, I'm Krish Verma, a <span class="hl">cs undergrad</span> who enjoys working with
+        <span class="hl">machine learning</span>, <span class="hl">LLMs</span>, and
+        <span class="hl">fullstack development</span>. I like building <span class="hl">useful tools</span>,
+        <span class="hl">clean interfaces</span> and exploring how things work. When I'm not coding,
+        I spend time playing basketball and chess, working out, dancing and reading books.
+      </p>
+
+      <div class="hero-actions">
+        <svg class="squiggle" id="squiggle" width="182" height="16" viewBox="0 0 182 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" style="width:11.375rem;height:1rem"><path id="squigglePath" d=""/></svg>
+        <button class="chip click-sound" id="openTerminal">terminal ~</button>
+        <a class="chip click-sound" href="#/resume">resume
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:0.9375rem;height:0.9375rem"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/></svg>
+        </a>
+      </div>
+
+      <div class="section" id="projects" style="scroll-margin-top:1.5rem">
+        <h2 class="serif section-title">Projects 📂</h2>
+        <div class="cards">
+          <a class="card" href="#/" data-action="project">
+            <div class="card-text">
+              <div class="card-title">claude context shift</div>
+              <div class="card-desc">an open-source tool that saves tokens and time.</div>
+            </div>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="card" href="#/" data-action="project">
+            <div class="card-text">
+              <div class="card-title">leetpush</div>
+              <div class="card-desc">an open-source tool.</div>
+            </div>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="card" href="#/" data-action="project">
+            <div class="card-text">
+              <div class="card-title">project name</div>
+              <div class="card-desc">one line about what it does.</div>
+            </div>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="card" href="#/" data-action="project">
+            <div class="card-text">
+              <div class="card-title">project name</div>
+              <div class="card-desc">WIP: one line about what it does.</div>
+            </div>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="card" href="#/" data-action="project">
+            <div class="card-text">
+              <div class="card-title">project name</div>
+              <div class="card-desc">WIP: more details soon.</div>
+            </div>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+        <a class="view-all" href="#/projects">View All Projects
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1rem;height:1rem"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+
+      <div class="bento-wrap" id="bentoWrap">
+        <button class="bento-toggle click-sound" id="bentoToggle" type="button" aria-expanded="false" aria-controls="bento">
+          <span class="bento-toggle__label">view more</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="bento" id="bento">
+          <div class="bento-row bento-1">
+            <a class="b-photo" href="#/about" aria-label="About me">
+              <span class="go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:calc(.9 * var(--u));height:calc(.9 * var(--u))"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+            </a>
+            <div class="b-mid">
+              <a class="b-tile b-linkedin" href="https://linkedin.com" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:calc(1.5 * var(--u));height:calc(1.5 * var(--u))"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                <span>(let's connect)</span>
+              </a>
+              <a class="b-tile b-x" href="https://x.com" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:calc(1.5 * var(--u));height:calc(1.5 * var(--u))"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>(say hi)</span>
+              </a>
+              <div class="b-waka">
+                <span class="waka-glow" aria-hidden="true"></span>
+                <div class="waka-body">
+                  <div class="waka-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:calc(1.3 * var(--u));height:calc(1.3 * var(--u))"><path d="m9 18-6-6 6-6M15 6l6 6-6 6M13.5 5l-3 14"/></svg>0h</div>
+                  <div class="cap">coding stats</div>
+                  <small>(wakatime)</small>
+                </div>
+              </div>
+            </div>
+            <div class="b-github" aria-label="GitHub activity">
+              <div class="gh-grid" id="ghGrid" aria-hidden="true"></div>
+              <div class="gh-stats">
+                <span>Stars: <b>--</b></span><span>Followers: <b>--</b></span>
+                <span>PRs: <b>--</b></span><span>Issues: <b>--</b></span>
+              </div>
+            </div>
+            <a class="b-spotify" href="https://open.spotify.com" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" style="width:calc(1.65 * var(--u));height:calc(1.65 * var(--u))"><circle cx="12" cy="12" r="12" fill="#1ed760"/><g fill="none" stroke="#0b0b0e" stroke-linecap="round"><path d="M5.4 8.5c4.3-1.3 9.6-.9 13.3 1.5" stroke-width="2"/><path d="M6.2 12.1c3.6-1 7.7-.6 10.8 1.3" stroke-width="1.8"/><path d="M7 15.5c2.8-.7 5.8-.4 8.2 1" stroke-width="1.6"/></g></svg>
+              <span>Open Spotify</span>
+            </a>
+          </div>
+          <div class="bento-row bento-2">
+            <div class="b-stack" role="img" aria-label="Tech stack icons">
+              <div class="stack-row" id="stackRow1"></div>
+              <div class="stack-row rev" id="stackRow2"></div>
+            </div>
+            <div class="b-status" aria-label="Discord status">
+              <span class="ring" aria-hidden="true"></span><span class="dot d1" aria-hidden="true"></span><span class="dot d2" aria-hidden="true"></span>
+              <div class="status-text"><b>Offline</b><small>(@handle)</small></div>
+            </div>
+            <a class="b-latest" href="#/writing" aria-label="Read the latest post">
+              <div class="lp-head">Latest Post</div>
+              <div class="lp-line"></div>
+              <div class="lp-title" id="lpTitle">Latest post</div>
+              <div class="lp-line"></div>
+              <div class="lp-date" id="lpDate"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="contact">
+        <div class="callout">
+          <span aria-hidden="true">💡</span>
+          <span>Feel free to reach me out at <a href="https://x.com" target="_blank" rel="noopener">x.com</a> or drop me an <a href="mailto:hello@example.com">email</a></span>
+        </div>
+        <h2 class="serif section-title contact-head">Contacts 💬</h2>
+        <p class="contact-sub" id="contactSub">It's currently <span class="hl" id="ctTime">--:-- --</span> for me, so I'm probably <span class="hl" id="ctStatus">working</span>. I'll get back to you soon.</p>
+
+        <div class="contact-grid">
+          <form class="form-card" id="contactForm" novalidate>
+            <div class="row">
+              <label for="email">Email</label>
+              <input class="field" id="email" type="email" placeholder="example@gmail.com" autocomplete="email">
+            </div>
+            <div class="row">
+              <label for="message">Message</label>
+              <textarea class="field" id="message" placeholder="Say hello to Krish 👋"></textarea>
+            </div>
+            <div class="form-foot">
+              <span class="form-note" id="formNote" role="status"></span>
+              <button class="send" type="submit">Send
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.125rem;height:1.125rem"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <div class="socials">
+            <a class="social" href="https://x.com" target="_blank" rel="noopener">
+              <span class="social-label">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="width:1.375rem;height:1.375rem"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                twitter
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <a class="social" href="https://github.com" target="_blank" rel="noopener">
+              <span class="social-label">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="width:1.375rem;height:1.375rem"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                github
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <a class="social" href="https://linkedin.com" target="_blank" rel="noopener">
+              <span class="social-label">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="width:1.375rem;height:1.375rem"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                linkedin
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <a class="social" href="https://behance.net" target="_blank" rel="noopener">
+              <span class="social-label">
+                <span class="be" aria-hidden="true">Bē</span>
+                behance
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <a class="social" href="https://instagram.com" target="_blank" rel="noopener">
+              <span class="social-label">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.375rem;height:1.375rem"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+                instagram
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+            <a class="social" href="https://discord.com" target="_blank" rel="noopener">
+              <span class="social-label">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="width:1.375rem;height:1.375rem"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                discord
+              </span>
+              <svg class="social-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="view" data-view="/about" hidden>
+      <h1 class="serif page-title">About Me 💁🏻‍♂️</h1>
+
+      <div class="about-grid">
+        <div class="about-label">My story</div>
+        <div class="about-body">
+          <p>Hey! I'm Krish, a third-year CSE student with an AIML specialisation at Bennett University, from Noida.</p>
+          <p>I work across web development and AI/ML, from computer vision and neural networks to LLM apps with LangChain and GenAI. I've taken part in a few hackathons and built a handful of minor and major projects along the way.</p>
+          <p>I did a three-month summer internship at Mankind Pharma as an SDE working on AI/LLM projects. I also build open-source tools, like claude context shift and leetpush, and have solved 180+ LeetCode problems.</p>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-label">Tools I use</div>
+        <div class="about-body">
+          <h3><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.0625rem;height:1.0625rem"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>My Toolbox</h3>
+          <p>Add the tools you start new ideas with here: design, planning and the editor you code in.</p>
+
+          <h3><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:1.0625rem;height:1.0625rem"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>Building Websites</h3>
+          <p>Add your web stack here: the frameworks and libraries you build interfaces with.</p>
+
+          <h3><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.0625rem;height:1.0625rem"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>AI &amp; Data</h3>
+          <p>For machine learning I work with neural networks and computer vision, and I build LLM and GenAI apps with LangChain.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WRITING ================= -->
+    <section class="view" data-view="/writing" hidden>
+      <h1 class="serif page-title">Writing 📒</h1>
+      <p class="writing-intro">Some of my stories and opinions about life, design and code. Subscribe to
+        <a href="#/writing" data-action="rss">RSS
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:0.9375rem;height:0.9375rem"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+        or follow on <a href="https://x.com" target="_blank" rel="noopener">twitter</a> for updates.</p>
+
+      <div class="posts">
+        <a class="post" href="#/writing/your-first-post-title">
+          <div class="thumb" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><rect width="100" height="100" fill="#0e1018"/><g stroke="#6f7aa8" stroke-width="1.2" fill="none" opacity=".9"><path d="M8 78 Q30 20 52 50 T92 22"/><path d="M8 84 Q34 40 56 62 T92 44" stroke="#c46a6a"/></g><g fill="#8a90b8"><rect x="10" y="12" width="34" height="3" rx="1.5"/><rect x="10" y="19" width="22" height="2" rx="1"/></g></svg>
+          </div>
+          <div>
+            <div class="post-title">Your first post title</div>
+            <div class="post-desc">A one-line summary of the post goes here.</div>
+            <div class="post-date">Sep 12, 2026</div>
+          </div>
+        </a>
+        <a class="post" href="#/writing/another-post-title">
+          <div class="thumb" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><rect width="100" height="100" fill="#0b0d14"/><g stroke="#3a3f57" stroke-width="1" fill="none"><path d="M50 8v84M8 50h84"/><rect x="38" y="38" width="24" height="24" rx="3" stroke="#8a90b8"/></g><g fill="#8a90b8"><circle cx="50" cy="14" r="3"/><circle cx="50" cy="86" r="3"/><circle cx="14" cy="50" r="3"/><circle cx="86" cy="50" r="3"/></g></svg>
+          </div>
+          <div>
+            <div class="post-title">Another post title</div>
+            <div class="post-desc">A short description that gives readers a reason to open it.</div>
+            <div class="post-date">Aug 30, 2026</div>
+          </div>
+        </a>
+        <a class="post" href="#/writing/a-third-post-title">
+          <div class="thumb" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><rect width="100" height="100" fill="#c9df9a"/><path d="M0 62 L22 38 L40 56 L62 26 L100 64 V100 H0Z" fill="#5f9a86"/><path d="M0 76 L26 52 L48 72 L72 46 L100 74 V100 H0Z" fill="#2f6b5c"/><path d="M0 90 L30 70 L60 88 L100 66 V100 H0Z" fill="#1c4a44"/></svg>
+          </div>
+          <div>
+            <div class="post-title">A third post title</div>
+            <div class="post-desc">Replace these placeholders with your own writing.</div>
+            <div class="post-date">Jul 12, 2026</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= WRITING: SINGLE POST ================= -->
+    <section class="view post-view" data-view="/writing/post" hidden>
+      <header class="post-nav">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="#/">home</a>
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <a href="#/writing">writing</a>
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <span class="crumb-current" id="postCrumb" aria-current="page"></span>
+        </nav>
+        <div class="post-nav-right">
+          <button class="shortcuts-btn" id="openShortcutsPost" aria-label="Keyboard shortcuts">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.125rem;height:1.125rem"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>
+            <span class="label">shortcuts</span><kbd>?</kbd>
+          </button>
+          <button class="icon-btn click-sound" id="themeBtnPost" aria-label="Toggle theme">
+            <svg class="i-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="i-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1.25rem;height:1.25rem"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <article class="post-article">
+        <h1 class="serif post-title" id="postTitle"></h1>
+        <p class="post-meta" id="postMeta"></p>
+        <div class="post-cover" id="postCover" aria-hidden="true"></div>
+        <div class="post-body" id="postBody"></div>
+      </article>
+    </section>
+
+    <!-- ================= RESUME ================= -->
+    <section class="view" data-view="/resume" hidden>
+      <div class="resume-head">
+        <h1 class="serif page-title">Resume</h1>
+        <a class="btn-download" id="resumeDownload" href="" download>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.0625rem;height:1.0625rem"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          Download PDF
+        </a>
+      </div>
+
+      <div class="resume-viewer" id="resumeViewer">
+        <div class="resume-frame-wrap" id="resumeFrameWrap">
+          <div class="resume-toolbar">
+            <div class="resume-toolbar-group">
+              <button class="resume-btn" id="resumeThumbsToggle" type="button" aria-label="Toggle thumbnails" aria-expanded="false" aria-pressed="false">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+              </button>
+            </div>
+            <div class="resume-toolbar-group">
+              <button class="resume-btn" id="resumePrev" type="button" aria-label="Previous page">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <span class="resume-page-indicator">Page&nbsp;&nbsp;<span id="resumePageNum">1</span>&nbsp;&nbsp;of&nbsp;<span id="resumePageCount">–</span></span>
+              <button class="resume-btn" id="resumeNext" type="button" aria-label="Next page">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+            <span class="resume-toolbar-sep" aria-hidden="true"></span>
+            <div class="resume-toolbar-group">
+              <button class="resume-btn" id="resumeViewMode" type="button" aria-label="Switch to continuous scroll view" aria-pressed="false" title="Switch to continuous scroll view">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="1.4"/></svg>
+              </button>
+              <button class="resume-btn" id="resumeRotateCw" type="button" aria-label="Rotate clockwise">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.36"/><path d="M21 4.5V9h-4.5"/></svg>
+              </button>
+            </div>
+            <span class="resume-toolbar-sep" aria-hidden="true"></span>
+            <div class="resume-toolbar-group">
+              <button class="resume-btn resume-btn-outline" id="resumeZoomOut" type="button" aria-label="Zoom out">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+              </button>
+              <div class="resume-zoom-wrap">
+                <select class="resume-zoom-select" id="resumeZoomSelect" aria-label="Zoom level">
+                  <option value="fit-width">Fit width</option>
+                  <option value="fit-page">Fit page</option>
+                  <option value="0.5">50%</option>
+                  <option value="0.75">75%</option>
+                  <option value="1" selected>100%</option>
+                  <option value="1.25">125%</option>
+                  <option value="1.5">150%</option>
+                  <option value="2">200%</option>
+                  <option value="2.5">250%</option>
+                </select>
+                <svg class="resume-zoom-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <button class="resume-btn resume-btn-outline" id="resumeZoomIn" type="button" aria-label="Zoom in">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+              </button>
+            </div>
+            <div class="resume-toolbar-group resume-search">
+              <button class="resume-btn" id="resumeSearchToggle" type="button" aria-label="Search text" aria-expanded="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+              </button>
+              <div class="resume-search-panel" id="resumeSearchPanel" hidden>
+                <input class="resume-search-input" id="resumeSearchInput" type="text" placeholder="Search text" autocomplete="off">
+                <span class="resume-search-result" id="resumeSearchResult"></span>
+              </div>
+            </div>
+            <div class="resume-toolbar-group">
+              <button class="resume-btn" id="resumeAnnotateToggle" type="button" aria-label="Annotate" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+            </div>
+            <!-- Annotate tools: hidden until "Annotate" is toggled on, then this extends the same toolbar pill. -->
+            <span class="resume-toolbar-sep" id="resumeAnnotateSep" aria-hidden="true" hidden></span>
+            <div class="resume-toolbar-group resume-annotate-tools" id="resumeAnnotateTools" hidden>
+              <button class="resume-btn" id="resumeToolMarker" type="button" aria-label="Marker" aria-pressed="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+              </button>
+              <button class="resume-btn" id="resumeToolHighlighter" type="button" aria-label="Highlighter" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h3l6-6"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+              </button>
+              <span class="resume-toolbar-sep" aria-hidden="true"></span>
+              <button class="resume-btn" id="resumeAnnotateUndo" type="button" aria-label="Undo" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+              </button>
+              <button class="resume-btn" id="resumeAnnotateRedo" type="button" aria-label="Redo" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="resume-body">
+            <aside class="resume-thumbs" id="resumeThumbs" hidden aria-label="Page thumbnails"></aside>
+            <div class="resume-page-area" id="resumePageArea">
+              <div class="resume-status" id="resumeStatus">Loading resume…</div>
+              <div class="resume-page-inner" id="resumePageInner" hidden>
+                <canvas id="resumeCanvas" class="resume-canvas"></canvas>
+                <div id="resumeTextLayer" class="resume-text-layer"></div>
+                <canvas id="resumeAnnotationLayer" class="resume-annotation-layer"></canvas>
+              </div>
+              <div class="resume-continuous" id="resumeContinuous" hidden aria-label="Resume pages, continuous view"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section class="view" data-view="/projects" hidden>
+      <h1 class="serif page-title">Projects 💻</h1>
+      <p class="projects-intro">Here are some of my projects. that I have worked on. some are open source and some are not.</p>
+
+      <!-- Replace each github href below with the project's real repo URL. -->
+      <div class="projects-table" role="table" aria-label="Projects">
+        <div class="projects-row projects-row--head" role="row">
+          <span class="projects-cell projects-cell--project" role="columnheader">Project</span>
+          <span class="projects-cell projects-cell--desc" role="columnheader">Description</span>
+          <span class="projects-cell projects-cell--actions" role="columnheader">Actions</span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">glyph</span>
+          <span class="projects-cell projects-cell--desc" role="cell">prompt to svg generator.</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open glyph on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">clarity</span>
+          <span class="projects-cell projects-cell--desc" role="cell">an ai powered chatbot for your website.</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open clarity on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">aethera</span>
+          <span class="projects-cell projects-cell--desc" role="cell">WIP: An AI-powered email and marketing service for your website.</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open aethera on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">manimotion.dev</span>
+          <span class="projects-cell projects-cell--desc" role="cell">a prompt to video lessons api</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open manimotion.dev on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">TooManyTabs</span>
+          <span class="projects-cell projects-cell--desc" role="cell">WIP: a browser extension- (more details soon)</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open TooManyTabs on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">sigil</span>
+          <span class="projects-cell projects-cell--desc" role="cell">WIP: a certificate that proves your a human.</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open sigil on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+
+        <div class="projects-row" role="row">
+          <span class="projects-cell projects-cell--project" role="cell">gitenv finder</span>
+          <span class="projects-cell projects-cell--desc" role="cell">created as a fun project to find if you have any env file pushed to your github repo.</span>
+          <span class="projects-cell projects-cell--actions" role="cell">
+            <a class="projects-github" href="https://github.com" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github
+            </a>
+            <a class="projects-external" href="https://github.com" target="_blank" rel="noopener" aria-label="Open gitenv finder on GitHub in a new tab">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+            </a>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LOADOUT ================= -->
+    <section class="view" data-view="/loadout" hidden>
+      <h1 class="serif page-title">Uses <span aria-hidden="true">💻</span></h1>
+      <p class="loadout-sub">tools and hardware I rely on daily basis.</p>
+
+      <div class="loadout-filters" role="tablist" aria-label="Filter loadout">
+        <button class="loadout-filter is-active" type="button" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="loadout-filter" type="button" data-filter="hardware" role="tab" aria-selected="false">Hardware</button>
+        <button class="loadout-filter" type="button" data-filter="software" role="tab" aria-selected="false">Software</button>
+        <button class="loadout-filter" type="button" data-filter="browser" role="tab" aria-selected="false">Browser</button>
+      </div>
+
+      <!-- One image per filter view. Replace each placeholder with an <img src="assets/..."> once you have the screenshot for that view. -->
+      <div class="loadout-shot" data-loadout-shot="all">
+        <div class="loadout-shot-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 16h20M9 21h6"/></svg>
+          <span>image for "All"</span>
+        </div>
+      </div>
+      <div class="loadout-shot" data-loadout-shot="hardware" hidden>
+        <div class="loadout-shot-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 16h20M9 21h6"/></svg>
+          <span>image for "Hardware"</span>
+        </div>
+      </div>
+      <div class="loadout-shot" data-loadout-shot="software" hidden>
+        <div class="loadout-shot-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 16h20M9 21h6"/></svg>
+          <span>image for "Software"</span>
+        </div>
+      </div>
+      <div class="loadout-shot" data-loadout-shot="browser" hidden>
+        <div class="loadout-shot-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 16h20M9 21h6"/></svg>
+          <span>image for "Browser"</span>
+        </div>
+      </div>
+
+      <div class="loadout-section" data-loadout-group="hardware">
+        <h2 class="serif section-title">Everyday</h2>
+        <dl class="loadout-list">
+          <div class="loadout-row"><dt>Laptop:</dt><dd>your laptop model</dd></div>
+          <div class="loadout-row"><dt>Old Laptop:</dt><dd>your old laptop</dd></div>
+          <div class="loadout-row"><dt>Monitor:</dt><dd>your monitor</dd></div>
+        </dl>
+      </div>
+
+      <div class="loadout-section" data-loadout-group="software">
+        <h2 class="serif section-title">Software</h2>
+        <dl class="loadout-list">
+          <div class="loadout-row"><dt>OS:</dt><dd>your operating system</dd></div>
+          <div class="loadout-row"><dt>DNS:</dt><dd>your DNS provider(s)</dd></div>
+          <div class="loadout-row"><dt>Terminal:</dt><dd>your terminal app(s)</dd></div>
+          <div class="loadout-row"><dt>Text Editor:</dt><dd>your editor(s)</dd></div>
+          <div class="loadout-row"><dt>Music:</dt><dd>your music app(s)</dd></div>
+          <div class="loadout-row"><dt>Notes:</dt><dd>your notes app(s)</dd></div>
+          <div class="loadout-row"><dt>Password Manager:</dt><dd>your password manager</dd></div>
+          <div class="loadout-row"><dt>Sync:</dt><dd>your file sync tool(s)</dd></div>
+          <div class="loadout-row"><dt>Browsers:</dt><dd>your browsers</dd></div>
+          <div class="loadout-row"><dt>Package Manager:</dt><dd>your package manager</dd></div>
+          <div class="loadout-row"><dt>Dev Tools:</dt><dd>your dev tools</dd></div>
+          <div class="loadout-row"><dt>Design:</dt><dd>your design tools</dd></div>
+          <div class="loadout-row"><dt>Chatting:</dt><dd>your chat apps</dd></div>
+          <div class="loadout-row"><dt>Launcher / Productivity:</dt><dd>your launcher / productivity tools</dd></div>
+          <div class="loadout-row"><dt>Keyboard / Shortcuts:</dt><dd>your keyboard / shortcut tools</dd></div>
+          <div class="loadout-row"><dt>Backup:</dt><dd>your backup tool</dd></div>
+          <div class="loadout-row"><dt>Misc:</dt><dd>anything else</dd></div>
+        </dl>
+      </div>
+
+      <div class="loadout-section" data-loadout-group="browser">
+        <h2 class="serif section-title">Browser</h2>
+        <p class="loadout-browser-intro">I use <b>your primary browser</b> as my primary browser, and <code>your secondary browser</code> as my secondary browser, along with the following extensions:</p>
+        <ol class="loadout-ext-list">
+          <li>OneTab</li>
+          <li>Dark Reader</li>
+          <li>JSON Viewer</li>
+          <li>uBlock Origin</li>
+          <li>Video Playback Speed Controller</li>
+          <li>React Developer Tools</li>
+          <li>Sponsor Block</li>
+          <li>Unhook</li>
+          <li>Google Docs Offline</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= EXPERIENCE ================= -->
+    <section class="view" data-view="/experience" hidden>
+      <h1 class="serif page-title">Experience 🧳</h1>
+      <p class="experience-intro">Where I've studied and worked so far.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">Summer</div>
+            <div class="timeline-dot" aria-hidden="true"></div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">SDE Intern, AI/LLM</div>
+            <div class="timeline-org">Mankind Pharma</div>
+            <p class="timeline-desc">A 3-month summer internship building AI/LLM-powered tools and features.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">2023 — 2028</div>
+            <div class="timeline-dot" aria-hidden="true"></div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">B.Tech, CSE (AIML)</div>
+            <div class="timeline-org">Bennett University</div>
+            <p class="timeline-desc">Specialising in AI/ML — computer vision, neural networks, LangChain and GenAI apps, alongside fullstack web development.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <div class="timeline-period">Ongoing</div>
+            <div class="timeline-dot" aria-hidden="true"></div>
+          </div>
+          <div class="timeline-body">
+            <div class="timeline-role">Hackathons &amp; open source</div>
+            <div class="timeline-org">Independent</div>
+            <p class="timeline-desc">Took part in a few hackathons and built open-source tools — claude context shift and leetpush — alongside 180+ solved LeetCode problems.</p>
+          </div>
+        </div>
+      </div>
+
+      <a class="btn-download" href="#/resume">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.0625rem;height:1.0625rem"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M14 2v6h6"/></svg>
+        View full resume
+      </a>
+    </section>
+
+    <!-- ================= MUSIC ================= -->
+    <section class="view" data-view="/music" hidden>
+      <h1 class="serif page-title">Music 🎧</h1>
+      <p class="music-intro">What I've been listening to lately.</p>
+
+      <a class="music-now" href="https://open.spotify.com" target="_blank" rel="noopener">
+        <span class="music-now-art" aria-hidden="true">
+          <svg viewBox="0 0 24 24" style="width:2.2rem;height:2.2rem"><circle cx="12" cy="12" r="12" fill="#1ed760"/><g fill="none" stroke="#0b0b0e" stroke-linecap="round"><path d="M5.4 8.5c4.3-1.3 9.6-.9 13.3 1.5" stroke-width="2"/><path d="M6.2 12.1c3.6-1 7.7-.6 10.8 1.3" stroke-width="1.8"/><path d="M7 15.5c2.8-.7 5.8-.4 8.2 1" stroke-width="1.6"/></g></svg>
+        </span>
+        <span class="music-now-body">
+          <span class="music-now-label">Now playing</span>
+          <span class="music-now-track">track name</span>
+          <span class="music-now-artist">artist name</span>
+        </span>
+        <svg class="music-now-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      </a>
+
+      <div class="section">
+        <h2 class="serif section-title">Top Artists</h2>
+        <div class="music-grid">
+          <div class="music-card"><span class="music-card-name">artist name</span></div>
+          <div class="music-card"><span class="music-card-name">artist name</span></div>
+          <div class="music-card"><span class="music-card-name">artist name</span></div>
+          <div class="music-card"><span class="music-card-name">artist name</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="serif section-title">Playlists</h2>
+        <div class="music-grid">
+          <a class="music-card music-card--link" href="https://open.spotify.com" target="_blank" rel="noopener">
+            <span class="music-card-name">playlist name</span>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="music-card music-card--link" href="https://open.spotify.com" target="_blank" rel="noopener">
+            <span class="music-card-name">playlist name</span>
+            <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="footer-left">
+      <button class="emoji-btn" id="emojiBtn" type="button" aria-label="Shuffling emoji"><span id="footEmoji" aria-hidden="true">🪄</span></button>
+      <span>2026</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>he/him</span>
+    </div>
+    <div class="footer-right">
+      <span class="views" id="views" title="Visitor count" aria-label="You are visitor number 0">You are the <span id="visitorNumber" class="visitor-highlight">0th</span> visitor</span>
+      <span class="ver" title="last updated aug 2026">v1.0</span>
+      <span class="timer-emoji" aria-hidden="true">⏲️</span><span class="tilde">~</span>
+      <span class="clock" id="footClock">-- --- --:--:--</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= OVERLAYS ================= -->
+<div class="overlay" id="shortcutsOverlay" hidden>
+  <div class="sc-modal" role="dialog" aria-modal="true" aria-labelledby="scTitle" aria-describedby="scSub">
+    <div class="sc-head">
+      <div><h2 id="scTitle">Keyboard shortcuts</h2><p id="scSub">Press G, then a letter, to navigate.</p></div>
+      <button class="sc-close" type="button" data-close aria-label="Close shortcuts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" style="width:1.35rem;height:1.35rem"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <ul class="sc-rows">
+      <li class="sc-item"><div><div class="sc-name">Home</div><div class="sc-desc">Go to the home page</div></div><div class="sc-keys"><kbd>G</kbd><span class="then">then</span><kbd>H</kbd></div></li>
+      <li class="sc-item"><div><div class="sc-name">About</div><div class="sc-desc">Go to the about page</div></div><div class="sc-keys"><kbd>G</kbd><span class="then">then</span><kbd>A</kbd></div></li>
+      <li class="sc-item"><div><div class="sc-name">Writing</div><div class="sc-desc">Go to the writing page</div></div><div class="sc-keys"><kbd>G</kbd><span class="then">then</span><kbd>W</kbd></div></li>
+      <li class="sc-item"><div><div class="sc-name">Contact</div><div class="sc-desc">Jump to the contact section</div></div><div class="sc-keys"><kbd>G</kbd><span class="then">then</span><kbd>C</kbd></div></li>
+      <li class="sc-item"><div><div class="sc-name">Terminal</div><div class="sc-desc">Open the terminal</div></div><div class="sc-keys"><kbd>`</kbd></div></li>
+      <li class="sc-item"><div><div class="sc-name">Theme</div><div class="sc-desc">Switch between dark and light</div></div><div class="sc-keys"><kbd>T</kbd></div></li>
+    </ul>
+    <div class="sc-foot">Press <b>?</b> anytime to toggle this panel.</div>
+  </div>
+</div>
+
+<div class="overlay" id="terminalOverlay" hidden>
+  <div class="modal term" role="dialog" aria-modal="true" aria-label="Terminal">
+    <div class="term-bar"><i></i><i></i><i></i><span>krish@portfolio: ~</span></div>
+    <div class="term-out" id="termOut" aria-live="polite"></div>
+    <div class="term-in"><span>~ %</span><input id="termIn" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- Scripts: plain scripts (no build step, works when opened by double-click). Order matters. -->
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/tech-icons.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/router.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/overlays.js"></script>
+<script src="js/posts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="js/resume.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/shortcuts.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/visitor.js"></script>
+<script src="js/hero.js"></script>
+<script src="js/bento.js"></script>
+<script src="js/loadout.js"></script>
+<script src="js/clock.js"></script>
+<script src="js/stars.js"></script>
+<script src="js/main.js"></script>
+<script src="js/cursor.js"></script>
+<!-- Applies the saved theme before first paint (must stay blocking, in <head>) -->
+<script src="js/theme-init.js"></script>
+<script src="js/click-sound.js"></script>
+
+</body>
+</html>

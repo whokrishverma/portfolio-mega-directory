@@ -1,0 +1,124 @@
+/* pages.css
+   About page and Writing page. */
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 10.4rem 1fr; column-gap: 1rem; margin-top: 3.4rem; }
+.about-grid + .about-grid { margin-top: 4.2rem; }
+.about-label { color: var(--muted); font-size: 1.05rem; padding-top: .1rem; }
+.about-body { font-size: .96rem; line-height: 1.6; color: var(--fg); }
+.about-body p + p { margin-top: .85rem; }
+.about-body h3 { display: flex; align-items: center; gap: .55rem; font-size: .96rem; font-weight: 400; margin-top: 1.4rem; margin-bottom: .55rem; }
+.about-body h3:first-child { margin-top: 0; }
+
+/* Writing */
+.writing-intro { margin-top: 2.1rem; font-size: 1.06rem; line-height: 1.64; color: var(--fg); }
+.writing-intro a { text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: .3rem; }
+.posts { margin-top: 3.4rem; display: grid; gap: 2rem; }
+.post { display: flex; gap: 1.1rem; align-items: center; }
+.post:hover .post-title { text-decoration: underline; text-underline-offset: 3px; }
+.thumb { width: 5.3rem; height: 5.3rem; flex: none; border-radius: .55rem; overflow: hidden; background: var(--surface-2); }
+.thumb svg { width: 100%; height: 100%; }
+.post-title { font-size: 1.12rem; color: var(--hl); line-height: 1.35; }
+.post-desc { font-size: .96rem; color: var(--muted); line-height: 1.45; margin-top: .1rem; }
+.post-date { font-size: .86rem; color: var(--muted); margin-top: .35rem; }
+
+/* Resume */
+.resume-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.btn-download { display: inline-flex; align-items: center; gap: .5rem; height: 2.5rem; padding: 0 1.1rem; border-radius: .6rem;
+  background: var(--surface-2); color: var(--fg); font-size: .94rem; border: 1px solid var(--border); transition: background .15s ease; }
+.btn-download:hover { background: var(--surface-3); }
+.resume-viewer { margin-top: 2.2rem; }
+.resume-frame-wrap { position: relative; height: 80vh; min-height: 32rem; border-radius: .9rem; overflow: hidden;
+  border: 1px solid var(--border); background: var(--surface-2); }
+
+/* Floating rounded toolbar, docked at the top of the page area.
+   Deliberately a fixed dark skin (not theme tokens) so it reads the same
+   over the white page canvas in both light and dark site themes. */
+.resume-toolbar { position: absolute; top: .9rem; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; align-items: center; gap: .55rem; max-width: calc(100% - 1.6rem); overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding: .5rem .95rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
+  background: #19191b; }
+.resume-toolbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+@supports (backdrop-filter: blur(1px)) {
+  .resume-toolbar { background: rgba(20, 20, 22, .88); backdrop-filter: blur(14px); }
+}
+.resume-toolbar-group { display: flex; align-items: center; gap: .35rem; flex: none; }
+.resume-toolbar-sep { width: 1px; height: 1.3rem; background: rgba(255, 255, 255, .14); flex: none; }
+.resume-btn { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem;
+  flex: none; border-radius: 999px; border: 0; background: transparent; color: #f2f2f3;
+  cursor: pointer; transition: background .15s ease, opacity .15s ease; }
+.resume-btn:hover:not(:disabled) { background: rgba(255, 255, 255, .1); }
+.resume-btn:disabled { opacity: .3; cursor: default; }
+.resume-btn[aria-pressed="true"] { background: rgba(255, 255, 255, .12); }
+.resume-btn-outline { border: 1px solid rgba(255, 255, 255, .28); }
+.resume-page-indicator { font-size: .85rem; color: #f2f2f3; white-space: nowrap; }
+
+/* Zoom percentage as a pill dropdown with a custom chevron over the native select */
+.resume-zoom-wrap { position: relative; display: inline-flex; align-items: center; }
+.resume-zoom-select { -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  font-size: .85rem; color: #f2f2f3; background: rgba(255, 255, 255, .1); border: 0; border-radius: 999px;
+  padding: .32rem 1.6rem .32rem .8rem; cursor: pointer; min-width: 4.6rem; }
+.resume-zoom-select:hover { background: rgba(255, 255, 255, .15); }
+.resume-zoom-select option { color: #111; background: #fff; }
+.resume-zoom-chevron { position: absolute; right: .55rem; top: 50%; transform: translateY(-50%);
+  color: rgba(255, 255, 255, .55); pointer-events: none; }
+
+/* Search + overflow menu popovers */
+.resume-search { position: relative; }
+.resume-search-panel { position: absolute; top: calc(100% + .5rem); right: 0; display: flex; align-items: center;
+  gap: .5rem; padding: .45rem .6rem; border-radius: .7rem; border: 1px solid rgba(255, 255, 255, .1);
+  background: #19191b; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); white-space: nowrap; }
+.resume-search-input { font-size: .86rem; color: #f2f2f3; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: .4rem; padding: .3rem .5rem; width: 10rem; }
+.resume-search-result { font-size: .78rem; color: rgba(255, 255, 255, .55); min-width: 3.4rem; }
+
+/* Annotate panel: stays open for the whole annotate session (not a click-away popover),
+   since the person needs to click into the page itself to draw. */
+.resume-annotate { position: relative; }
+.resume-annotate-panel { position: absolute; top: calc(100% + .5rem); right: 0; display: flex; align-items: center;
+  gap: .6rem; padding: .5rem .7rem; border-radius: .8rem; border: 1px solid rgba(255, 255, 255, .1);
+  background: #19191b; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); white-space: nowrap; }
+.resume-annotate-colors { display: flex; align-items: center; gap: .4rem; }
+.resume-annotate-color { width: 1.25rem; height: 1.25rem; flex: none; border-radius: 999px; cursor: pointer;
+  border: 2px solid transparent; background: var(--dot); padding: 0; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25); }
+.resume-annotate-color.is-active { border-color: #fff; }
+.resume-annotate-action { font-size: .78rem; color: #f2f2f3; background: transparent;
+  border: 1px solid rgba(255, 255, 255, .25); border-radius: .4rem; padding: .28rem .6rem; cursor: pointer; }
+.resume-annotate-action:hover { background: rgba(255, 255, 255, .1); }
+.resume-annotate-action:disabled { opacity: .35; cursor: default; }
+
+/* Annotation drawing surface: sits above the text layer, only interactive while annotating */
+.resume-annotation-layer { position: absolute; inset: 0; touch-action: none; pointer-events: none; }
+.resume-frame-wrap.is-annotating .resume-annotation-layer { pointer-events: auto; cursor: crosshair; }
+
+.resume-body { position: absolute; inset: 0; display: flex; }
+.resume-page-area { position: relative; flex: 1; min-width: 0; overflow: auto; padding: 4.6rem 1rem 1.2rem; text-align: center;
+  scrollbar-width: none; -ms-overflow-style: none; }
+.resume-page-area::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Thumbnail sidebar */
+.resume-thumbs { flex: none; width: 8.6rem; overflow-y: auto; overflow-x: hidden; padding: 4.6rem .7rem 1rem;
+  border-right: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; gap: .7rem;
+  scrollbar-width: thin; }
+.resume-thumb { display: block; padding: 0; border: 2px solid transparent; border-radius: .35rem; background: transparent;
+  cursor: pointer; text-align: center; }
+.resume-thumb canvas { display: block; width: 100%; height: auto; border-radius: .2rem; background: #fff; box-shadow: var(--shadow); }
+.resume-thumb-num { display: block; margin-top: .3rem; font-size: .74rem; color: var(--muted); }
+.resume-thumb.is-active { border-color: var(--hl); }
+.resume-thumb.is-active .resume-thumb-num { color: var(--hl); }
+@media (max-width: 640px) {
+  .resume-thumbs { position: absolute; inset: 0 auto 0 0; z-index: 4; box-shadow: var(--shadow); }
+}
+.resume-status { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: .94rem; }
+.resume-canvas { display: block; background: #fff; }
+.resume-page-inner { position: relative; display: inline-block; border-radius: .4rem; overflow: hidden;
+  box-shadow: var(--shadow); }
+.resume-text-layer { position: absolute; inset: 0; overflow: hidden; line-height: 1; text-align: initial;
+  -webkit-text-size-adjust: none; text-size-adjust: none; }
+.resume-text-layer span, .resume-text-layer br { color: transparent; position: absolute; white-space: pre;
+  cursor: text; transform-origin: 0% 0%; }
+.resume-text-layer ::selection { background: rgba(59, 109, 240, .35); }
+.resume-text-layer ::-moz-selection { background: rgba(59, 109, 240, .35); }

@@ -1,0 +1,256 @@
+/* resume.js
+   Renders the resume PDF (path set once in js/config.js -> resumePdf) into the /resume view
+   using PDF.js (loaded via CDN in index.html): a canvas preview with a floating toolbar
+   (page nav, rotate, zoom, text search, and a download menu). The standalone "Download PDF"
+   button and the menu's download item both point at the same file. Drop your actual PDF at
+   that path (default: assets/resume.pdf) — nothing else to change. */
+(function (App) {
+  'use strict';
+  var $ = App.$;
+
+  var wrap = $('#resumeFrameWrap');
+  var pageArea = $('#resumePageArea');
+  var canvas = $('#resumeCanvas');
+  var statusEl = $('#resumeStatus');
+  var downloadBtn = $('#resumeDownload');
+  var menuDownloadLink = $('#resumeMenuDownload');
+  var prevBtn = $('#resumePrev');
+  var nextBtn = $('#resumeNext');
+  var rotateCcwBtn = $('#resumeRotateCcw');
+  var rotateCwBtn = $('#resumeRotateCw');
+  var zoomInBtn = $('#resumeZoomIn');
+  var zoomOutBtn = $('#resumeZoomOut');
+  var zoomSelect = $('#resumeZoomSelect');
+  var pageNumEl = $('#resumePageNum');
+  var pageCountEl = $('#resumePageCount');
+  var searchToggleBtn = $('#resumeSearchToggle');
+  var searchPanel = $('#resumeSearchPanel');
+  var searchInput = $('#resumeSearchInput');
+  var searchResultEl = $('#resumeSearchResult');
+  var menuToggleBtn = $('#resumeMenuToggle');
+  var menuPanel = $('#resumeMenuPanel');
+  var src = App.config.resumePdf;
+
+  if (downloadBtn) downloadBtn.setAttribute('href', src);
+  if (menuDownloadLink) menuDownloadLink.setAttribute('href', src);
+  if (!canvas || !wrap) return;
+
+  var ZOOM_STEPS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5];
+  var ctx = canvas.getContext('2d');
+  var pdfDoc = null;
+  var currentPage = 1;
+  var zoomIndex = 2; // 1.0
+  var rotation = 0; // degrees, multiple of 90
+  var renderToken = 0;
+  var loaded = false;
+  var failed = false;
+  var pageTextCache = {}; // pageNumber -> lowercase text, filled lazily while searching
+
+  function setStatus(text) {
+    if (!statusEl) return;
+    if (text) {
+      statusEl.textContent = text;
+      statusEl.hidden = false;
+      canvas.hidden = true;
+    } else {
+      statusEl.hidden = true;
+      canvas.hidden = false;
+    }
+  }
+
+  function closePopovers(except) {
+    if (searchPanel && except !== searchPanel) {
+      searchPanel.hidden = true;
+      if (searchToggleBtn) searchToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+    if (menuPanel && except !== menuPanel) {
+      menuPanel.hidden = true;
+      if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function updateControls() {
+    if (pageNumEl) pageNumEl.textContent = String(currentPage);
+    if (pageCountEl) pageCountEl.textContent = pdfDoc ? String(pdfDoc.numPages) : '–';
+    if (zoomSelect) zoomSelect.value = String(ZOOM_STEPS[zoomIndex]);
+    if (prevBtn) prevBtn.disabled = !pdfDoc || currentPage <= 1;
+    if (nextBtn) nextBtn.disabled = !pdfDoc || currentPage >= pdfDoc.numPages;
+    if (zoomOutBtn) zoomOutBtn.disabled = zoomIndex <= 0;
+    if (zoomInBtn) zoomInBtn.disabled = zoomIndex >= ZOOM_STEPS.length - 1;
+  }
+
+  function renderPage(pageNumber) {
+    if (!pdfDoc) return;
+    var token = ++renderToken;
+
+    pdfDoc.getPage(pageNumber).then(function (page) {
+      if (token !== renderToken) return;
+
+      var containerWidth = (pageArea ? pageArea.clientWidth : wrap.clientWidth) - 32;
+      var baseViewport = page.getViewport({ scale: 1, rotation: rotation });
+      var fitScale = containerWidth > 0 ? containerWidth / baseViewport.width : 1;
+      var scale = fitScale * ZOOM_STEPS[zoomIndex];
+      var dpr = window.devicePixelRatio || 1;
+      var viewport = page.getViewport({ scale: scale, rotation: rotation });
+
+      canvas.width = Math.ceil(viewport.width * dpr);
+      canvas.height = Math.ceil(viewport.height * dpr);
+      canvas.style.width = Math.ceil(viewport.width) + 'px';
+      canvas.style.height = Math.ceil(viewport.height) + 'px';
+
+      var renderContext = {
+        canvasContext: ctx,
+        viewport: viewport,
+        transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
+      };
+
+      page.render(renderContext).promise.then(function () {
+        if (token !== renderToken) return;
+        setStatus(null);
+        updateControls();
+      });
+    });
+  }
+
+  function goToPage(pageNumber) {
+    if (!pdfDoc) return;
+    currentPage = Math.min(Math.max(pageNumber, 1), pdfDoc.numPages);
+    renderPage(currentPage);
+  }
+
+  function setZoom(nextIndex) {
+    zoomIndex = Math.min(Math.max(nextIndex, 0), ZOOM_STEPS.length - 1);
+    renderPage(currentPage);
+  }
+
+  function setZoomValue(value) {
+    var index = ZOOM_STEPS.indexOf(value);
+    setZoom(index === -1 ? 2 : index);
+  }
+
+  function rotateBy(delta) {
+    rotation = ((rotation + delta) % 360 + 360) % 360;
+    renderPage(currentPage);
+  }
+
+  function getPageText(pageNumber) {
+    if (pageTextCache[pageNumber] !== undefined) {
+      return Promise.resolve(pageTextCache[pageNumber]);
+    }
+    return pdfDoc.getPage(pageNumber).then(function (page) {
+      return page.getTextContent();
+    }).then(function (content) {
+      var text = content.items.map(function (item) { return item.str; }).join(' ').toLowerCase();
+      pageTextCache[pageNumber] = text;
+      return text;
+    });
+  }
+
+  function runSearch(query) {
+    var normalizedQuery = query.trim().toLowerCase();
+    if (!pdfDoc || !normalizedQuery) {
+      if (searchResultEl) searchResultEl.textContent = '';
+      return;
+    }
+    if (searchResultEl) searchResultEl.textContent = 'Searching…';
+
+    var pageNumbers = [];
+    for (var i = 1; i <= pdfDoc.numPages; i += 1) pageNumbers.push(i);
+
+    var searchToken = normalizedQuery;
+    function checkPage(index) {
+      if (searchInput && searchInput.value.trim().toLowerCase() !== searchToken) return; // stale search
+      if (index >= pageNumbers.length) {
+        if (searchResultEl) searchResultEl.textContent = 'No results';
+        return;
+      }
+      var pageNumber = pageNumbers[index];
+      getPageText(pageNumber).then(function (text) {
+        if (searchInput && searchInput.value.trim().toLowerCase() !== searchToken) return;
+        if (text.indexOf(searchToken) !== -1) {
+          if (searchResultEl) searchResultEl.textContent = 'Page ' + pageNumber;
+          goToPage(pageNumber);
+        } else {
+          checkPage(index + 1);
+        }
+      });
+    }
+    checkPage(0);
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { goToPage(currentPage - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { goToPage(currentPage + 1); });
+  if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () { setZoom(zoomIndex - 1); });
+  if (zoomInBtn) zoomInBtn.addEventListener('click', function () { setZoom(zoomIndex + 1); });
+  if (zoomSelect) zoomSelect.addEventListener('change', function () { setZoomValue(Number(zoomSelect.value)); });
+  if (rotateCcwBtn) rotateCcwBtn.addEventListener('click', function () { rotateBy(-90); });
+  if (rotateCwBtn) rotateCwBtn.addEventListener('click', function () { rotateBy(90); });
+
+  if (searchToggleBtn && searchPanel) {
+    searchToggleBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var willOpen = searchPanel.hidden;
+      closePopovers(willOpen ? searchPanel : null);
+      searchPanel.hidden = !willOpen;
+      searchToggleBtn.setAttribute('aria-expanded', String(willOpen));
+      if (willOpen && searchInput) searchInput.focus();
+    });
+  }
+  if (searchInput) {
+    var searchDebounce = null;
+    searchInput.addEventListener('input', function () {
+      window.clearTimeout(searchDebounce);
+      searchDebounce = window.setTimeout(function () { runSearch(searchInput.value); }, 300);
+    });
+    searchInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') runSearch(searchInput.value);
+      if (event.key === 'Escape') { searchPanel.hidden = true; searchToggleBtn.focus(); }
+    });
+  }
+
+  if (menuToggleBtn && menuPanel) {
+    menuToggleBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      var willOpen = menuPanel.hidden;
+      closePopovers(willOpen ? menuPanel : null);
+      menuPanel.hidden = !willOpen;
+      menuToggleBtn.setAttribute('aria-expanded', String(willOpen));
+    });
+  }
+
+  document.addEventListener('click', function () { closePopovers(null); });
+
+  window.addEventListener('resize', function () {
+    if (pdfDoc) renderPage(currentPage);
+  });
+
+  // Load the PDF lazily, the first time the /resume view is opened, rather than on every page load.
+  function ensureLoaded() {
+    if (loaded || failed) return;
+    loaded = true;
+    setStatus('Loading resume…');
+
+    if (!window.pdfjsLib) {
+      failed = true;
+      setStatus('Could not load the PDF viewer.');
+      return;
+    }
+
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    window.pdfjsLib.getDocument(src).promise.then(function (doc) {
+      pdfDoc = doc;
+      currentPage = 1;
+      renderPage(currentPage);
+    }, function () {
+      failed = true;
+      setStatus('Could not load the resume PDF.');
+    });
+  }
+
+  window.addEventListener('hashchange', function () {
+    if (App.router.current() === '/resume') ensureLoaded();
+  });
+  if (App.router.current() === '/resume') ensureLoaded();
+})(window.App);

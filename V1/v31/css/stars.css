@@ -1,0 +1,87 @@
+/* stars.css
+   Light-theme ambient stars in the side margins only. */
+.light-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 3.5s ease, visibility 0s linear 3.5s;
+}
+
+:root[data-theme="light"] .light-stars.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 3.5s ease;
+}
+
+.light-stars__zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: max(0px, calc((100vw - min(64rem, 100vw)) / 2));
+  overflow: hidden;
+}
+
+.light-stars__zone--left {
+  left: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 42%, rgba(0,0,0,.72) 67%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 42%, rgba(0,0,0,.72) 67%, transparent 100%);
+}
+
+.light-stars__zone--right {
+  right: 0;
+  -webkit-mask-image: linear-gradient(270deg, #000 0%, #000 42%, rgba(0,0,0,.72) 67%, transparent 100%);
+  mask-image: linear-gradient(270deg, #000 0%, #000 42%, rgba(0,0,0,.72) 67%, transparent 100%);
+}
+
+.light-star {
+  position: absolute;
+  display: block;
+  width: var(--star-size);
+  height: var(--star-size);
+  opacity: var(--star-opacity);
+  transform: translate3d(0, 0, 0) rotate(45deg) scale(.7);
+  will-change: transform, opacity;
+  animation: lightStarDrift var(--star-duration) ease-in-out var(--star-delay) infinite alternate;
+}
+
+/* Each star is a real text glyph, randomly chosen in stars.js. */
+.light-star {
+  color: #080808;
+  width: auto;
+  height: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--star-size);
+  line-height: 1;
+  font-weight: 700;
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(.7);
+  text-align: center;
+  transform-origin: center;
+}
+
+@keyframes lightStarDrift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(45deg) scale(.72);
+  }
+  35% {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0) rotate(62deg) scale(1);
+  }
+  70% {
+    transform: translate3d(calc(var(--drift-x) * -.55), var(--drift-y), 0) rotate(35deg) scale(.82);
+  }
+  100% {
+    transform: translate3d(calc(var(--drift-x) * .35), calc(var(--drift-y) * -1), 0) rotate(72deg) scale(.95);
+  }
+}
+
+@media (max-width: 900px) {
+  .light-stars { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-stars { transition: none; }
+  .light-star { animation: none; }
+}

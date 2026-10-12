@@ -1,0 +1,21 @@
+/* footer.css
+   Footer: emoji shuffle, view counter, version box, clock. */
+
+/* Footer */
+.footer { margin-top: 4.4rem; border-top: 1px solid var(--border); padding: 1.5rem .9rem 3.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.footer-left, .footer-right { display: flex; align-items: center; gap: .7rem; font-size: 1.05rem; }
+.footer-right { flex-wrap: wrap; }
+.footer-left .sep { width: 1px; height: 1.1rem; background: var(--border-strong); }
+.emoji-btn { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: .5rem; font-size: 1.15rem; line-height: 1; cursor: pointer; transition: transform .15s ease, background-color .15s ease; }
+.emoji-btn:hover { transform: scale(1.18); background: var(--surface-2); }
+.emoji-btn.fast #footEmoji { animation: wiggle .22s ease-in-out infinite; }
+#footEmoji { display: inline-block; }
+#footEmoji.pop { animation: emojiPop .34s cubic-bezier(.3, 1.5, .5, 1) both; }
+@keyframes emojiPop { 0% { transform: translateY(.45rem) scale(.55) rotate(-24deg); opacity: .15; } 100% { transform: none; opacity: 1; } }
+@keyframes wiggle { 0%, 100% { transform: rotate(-10deg) scale(1.05); } 50% { transform: rotate(10deg) scale(.95); } }
+.ver { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: .92rem; color: var(--muted); border: 1px solid var(--border-strong); padding: .1rem .5rem; border-radius: .4rem; }
+.views { font-family: 'Satoshi', sans-serif; font-size: .92rem; display: inline-flex; align-items: center; gap: .4rem; color: #818391; }
+.views .visitor-highlight { color: #181818; }
+.timer-emoji { font-size: 1.1rem; line-height: 1; }
+.clock { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: .95rem; background: var(--surface-2); padding: .12rem .5rem; border-radius: .4rem; color: var(--hl); }
+.tilde { color: var(--muted); }

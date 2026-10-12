@@ -1,0 +1,109 @@
+/* stars.css
+   Ambient star field in the two side gutters (light theme only).
+   Does not touch typography, layout, colours or existing components. */
+
+/* ---------- Tuning knobs ---------- */
+:root {
+  /* Half the width of the central content box (.container max-width / 2).
+     Keep in sync with .container in base.css. */
+  --star-content-half: 28.25rem;
+  /* Breathing room between the content edge and where stars may start. */
+  --star-gap: 1rem;
+  /* Ink colour of a star (r,g,b). */
+  --star-color: 23, 24, 28;
+  /* Global dimmer for the whole effect (0 = invisible, 1 = as generated). */
+  --star-field-opacity: 1;
+}
+
+/* ---------- Field + zones ---------- */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: -1;                 /* same layer strategy as .bg -> always behind content */
+  pointer-events: none;
+  display: none;               /* dark theme / narrow screens: fully off */
+  opacity: var(--star-field-opacity);
+}
+
+/* Light theme only, hooked into the existing data-theme attribute. */
+:root[data-theme="light"] .starfield { display: block; }
+/* Fallback if the attribute has not been written yet and the OS is light. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .starfield { display: block; }
+}
+
+.star-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(50vw - var(--star-content-half) - var(--star-gap));
+  overflow: hidden;            /* hard clip: nothing escapes a zone */
+  pointer-events: none;
+}
+
+.star-zone--left  { left: 0; }
+.star-zone--right { right: 0; }
+
+/* ---------- Opacity gradient ----------
+   Strongest at the outer edge, smoothly fading to nothing at the inner
+   edge that faces the central content. No hard boundary anywhere. */
+.star-zone--left {
+  -webkit-mask-image: linear-gradient(to right,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,.72) 52%,
+    rgba(0,0,0,.38) 72%, rgba(0,0,0,.14) 88%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to right,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,.72) 52%,
+    rgba(0,0,0,.38) 72%, rgba(0,0,0,.14) 88%, rgba(0,0,0,0) 100%);
+}
+.star-zone--right {
+  -webkit-mask-image: linear-gradient(to left,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,.72) 52%,
+    rgba(0,0,0,.38) 72%, rgba(0,0,0,.14) 88%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to left,
+    rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,.72) 52%,
+    rgba(0,0,0,.38) 72%, rgba(0,0,0,.14) 88%, rgba(0,0,0,0) 100%);
+}
+
+/* ---------- A single star ---------- */
+.star {
+  position: absolute;
+  display: block;
+  width: var(--s, 4px);
+  height: var(--s, 4px);
+  background: rgba(var(--star-color), 1);
+  opacity: var(--o-min, .5);
+  animation: starDrift var(--dur, 10s) ease-in-out var(--delay, 0s) infinite;
+  /* minimalist 4-point sparkle */
+  -webkit-clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+}
+
+/* a minority are 5-point, for variety */
+.star.star--five {
+  -webkit-clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+@keyframes starDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1);                   opacity: var(--o-min, .5); }
+  50%  { transform: translate3d(var(--dx, 4px), var(--dy, 4px), 0) scale(1.08); opacity: var(--o-max, .8); }
+  100% { transform: translate3d(0, 0, 0) scale(1);                   opacity: var(--o-min, .5); }
+}
+
+/* ---------- Debug ----------
+   Add class "starfield--debug" to the .starfield element (or run
+   App.stars.debug()) to tint the two zones so you can see their bounds. */
+.starfield--debug .star-zone { background: rgba(255, 0, 0, .12); outline: 1px dashed red; }
+.starfield--debug .star { background: red; opacity: 1 !important; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px) { :root { --star-gap: .75rem; } }
+
+/* Not enough side space to frame anything -> switch the effect off. */
+@media (max-width: 820px) {
+  .starfield { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star { animation: none !important; opacity: var(--o-min, .5); }
+}

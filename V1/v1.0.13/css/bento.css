@@ -1,0 +1,122 @@
+/* bento.css
+   Home page: bento grid (links, stats, tech-stack marquee, status, latest post),
+   plus the "view more / view less" button that expands it to the full screen width. */
+
+/* ---------- Scalable unit ----------
+   Every size in the bento is written as calc(N * var(--u)). --u is 1rem normally, so the
+   grid looks exactly as designed. When the section is expanded, --u grows with the screen
+   width, so tiles, icons and text all scale together (rows get taller, nothing clips).
+   @property lets --u animate smoothly; browsers without it simply snap to the new size. */
+@property --u { syntax: '<length>'; inherits: true; initial-value: 12.5px; }
+
+/* ---------- Section wrapper + view more button ---------- */
+.bento-wrap {
+  --u: 1rem;
+  --bento-gutter: 1.25rem;                   /* space left at each screen edge when expanded */
+
+  /* ======================================================================================
+     EXPANDED WIDTH  -  change ONLY the number below to choose how much of the screen the
+     section takes after "view more".
+         80vw  = 80% of the screen width      60vw = 60%      95vw = 95%      100vw = full
+     (vw is "% of screen width". Don't type %, that would mean % of the page column.)
+     Other units work too: 150dvh (1.5 x screen height), 1200px, 90rem ...
+     The height follows automatically (about 0.39 x the width). It is always centred and is
+     never narrower than the normal (collapsed) size, so a small screen can't make it shrink.
+     Tablets / small windows / phones use the second value, right below the rule that follows.
+     ====================================================================================== */
+  --bento-expanded-width: 80vw;
+
+  position: relative; z-index: 1;            /* stays above the light-theme side stars */
+  margin-top: 3.6rem;
+  width: 100%; margin-left: 0;
+  transition: width .6s cubic-bezier(.4, 0, .2, 1), margin-left .6s cubic-bezier(.4, 0, .2, 1), --u .6s cubic-bezier(.4, 0, .2, 1);
+}
+/* Breaks out of the centred page column. The bento is designed at 54 units wide, so
+   --u = width / 54 keeps the same layout, just bigger. Centred on the screen.
+   Width = the value above, but never wider than the screen and never narrower than the
+   normal size. (Normal size = page column: min(screen, 56.5rem) minus 2.5rem of side padding,
+   the same numbers as .container in base.css - update both if you change the page width.) */
+.bento-wrap.is-expanded {
+  --bento-w: max(
+    min(var(--bento-expanded-width), 100vw - 2 * var(--bento-gutter)),
+    min(100vw, 56.5rem) - 2.5rem
+  );
+  --u: calc(var(--bento-w) / 54);
+  width: var(--bento-w);
+  margin-left: calc(50% - var(--bento-w) / 2);
+}
+/* SMALL SCREENS (900px wide or less: tablets, small windows, phones).
+   80vw would be barely bigger than the normal size there, so use more of the screen.
+   Change the number the same way (95vw, 100vw ...). Keep it high on phones: they are narrow. */
+@media (max-width: 900px) {
+  .bento-wrap { --bento-expanded-width: 100vw; }
+}
+/* .bento-toggle { display: inline-flex; align-items: center; gap: .45rem; margin: 0 0 .55rem -.4rem; padding: .3rem .4rem; */
+.bento-toggle { display: flex; width: fit-content; align-items: center; gap: .45rem; margin: 0 -.4rem .55rem auto; padding: .3rem .4rem;
+  font-size: 1.12rem; line-height: 1.2; color: var(--muted); border-radius: .5rem; transition: color .15s ease; }
+.bento-toggle:hover { color: var(--fg); }
+.bento-toggle svg { width: 1rem; height: 1rem; transition: transform .35s cubic-bezier(.4, 0, .2, 1); }
+.bento-wrap.is-expanded .bento-toggle svg { transform: rotate(180deg); }
+
+/* Bento */
+.bento { display: grid; gap: calc(.9 * var(--u)); }
+.bento-row { display: grid; column-gap: calc(.9 * var(--u)); }
+.bento-1 { grid-template-columns: 130fr 511fr 433fr 205fr; height: calc(10.1 * var(--u)); }
+.bento-2 { grid-template-columns: 665fr 160fr 469fr; height: calc(10.1 * var(--u)); }
+.b-photo { position: relative; border-radius: calc(.7 * var(--u)); overflow: hidden; display: block;
+  background: linear-gradient(180deg, #2f2c58 0%, #6f5590 42%, #d07f8c 76%, #e8a88a 100%); }
+.b-photo .go { position: absolute; top: calc(.55 * var(--u)); right: calc(.55 * var(--u)); width: calc(1.6 * var(--u)); height: calc(1.6 * var(--u)); border-radius: 50%; background: #0a0a0d; color: #fff; display: grid; place-items: center; }
+.b-mid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: calc(.85 * var(--u)) calc(.6 * var(--u)); }
+.b-tile { border-radius: calc(.7 * var(--u)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(.3 * var(--u)); font-size: calc(.9 * var(--u)); transition: filter .15s ease, background-color .15s ease; }
+.b-tile:hover { filter: brightness(1.1); }
+.b-linkedin { background: #3b67b1; color: rgba(255,255,255,.82); }
+.b-linkedin svg, .b-x svg { color: #fff; }
+.b-x { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+.b-x svg { color: var(--hl); }
+.b-waka { grid-column: 1 / -1; position: relative; display: grid; place-items: center; text-align: center; overflow: hidden; }
+.waka-glow { position: absolute; left: calc(.4 * var(--u)); top: 50%; width: calc(4.4 * var(--u)); height: calc(4.4 * var(--u)); transform: translateY(-50%) rotate(-12deg); border-radius: 50%; background: #2f6fc4; opacity: .34; filter: blur(calc(1.28 * var(--u))); }
+.waka-body { position: relative; display: grid; justify-items: center; line-height: 1.2; }
+.waka-big { display: flex; align-items: center; gap: calc(.4 * var(--u)); font-size: calc(1.95 * var(--u)); font-weight: 700; color: var(--hl); letter-spacing: .01em; }
+.waka-big svg { color: var(--fg); }
+.waka-body .cap { font-size: calc(.96 * var(--u)); color: var(--fg); margin-top: calc(.1 * var(--u)); }
+.waka-body small { font-size: calc(.78 * var(--u)); color: var(--muted); margin-top: calc(.1 * var(--u)); }
+.b-github { border-radius: calc(.7 * var(--u)); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; }
+.gh-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: calc(.43 * var(--u)); }
+.gh-cell { aspect-ratio: 1; border-radius: calc(.25 * var(--u)); background: var(--surface-2); }
+.gh-cell.l1 { background: color-mix(in srgb, var(--green) 45%, var(--surface)); }
+.gh-cell.l2 { background: color-mix(in srgb, var(--green) 78%, var(--surface)); }
+.gh-cell.off { visibility: hidden; }
+.gh-stats { display: grid; grid-template-columns: calc(5.7 * var(--u)) auto; gap: calc(.35 * var(--u)) 0; padding: calc(.6 * var(--u)) calc(.55 * var(--u)) 0; margin-top: auto; padding-bottom: calc(.75 * var(--u)); font-size: calc(1.05 * var(--u)); color: var(--muted); }
+.gh-stats b { font-weight: 400; color: var(--hl); }
+.b-spotify { border-radius: calc(1 * var(--u)); background: var(--surface); border: 1px solid var(--border-strong); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(.6 * var(--u)); font-size: calc(.96 * var(--u)); color: var(--muted); transition: background-color .15s ease; }
+.b-spotify:hover { background: var(--surface-2); }
+.b-stack { position: relative; display: flex; flex-direction: column; justify-content: center; gap: calc(.6 * var(--u)); overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 93%, transparent 100%); }
+.stack-row { display: flex; }
+.stack-row.rev { margin-left: calc(-1.6 * var(--u)); }
+.track { display: flex; width: max-content; animation: marqueeL 46s linear infinite; }
+.stack-row.rev .track { animation-name: marqueeR; animation-duration: 52s; }
+.set { display: flex; gap: calc(1.1 * var(--u)); padding-right: calc(1.1 * var(--u)); }
+@keyframes marqueeL { to { transform: translateX(-50%); } }
+@keyframes marqueeR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.tile { width: calc(3.4 * var(--u)); height: calc(3.4 * var(--u)); border-radius: calc(.8 * var(--u)); background: var(--surface-3); border: 1px solid var(--border); display: grid; place-items: center; flex: none; }
+.tile svg { width: calc(2.2 * var(--u)); height: calc(2.2 * var(--u)); }
+.tile.t-docker { background: #2b8ce0; border-color: transparent; }
+.tile.t-git { background: #e5493a; border-color: transparent; }
+.tile.t-js { background: #f7df1e; border-color: transparent; }
+.b-status { position: relative; overflow: hidden; border-radius: calc(.7 * var(--u)); background: var(--surface); display: grid; place-items: center; }
+.b-status .ring { position: absolute; left: calc(-2.6 * var(--u)); top: calc(-2.4 * var(--u)); width: calc(8.6 * var(--u)); height: calc(8.6 * var(--u)); border-radius: 50%; border: calc(.55 * var(--u)) solid var(--surface-2); }
+.b-status .dot { position: absolute; border-radius: 50%; background: var(--surface-3); }
+.b-status .d1 { width: calc(1.9 * var(--u)); height: calc(1.9 * var(--u)); top: calc(1.1 * var(--u)); left: calc(4.4 * var(--u)); }
+.b-status .d2 { width: calc(.9 * var(--u)); height: calc(.9 * var(--u)); top: calc(3.9 * var(--u)); right: calc(.8 * var(--u)); }
+.status-text { position: relative; transform: rotate(-14deg); text-align: center; line-height: 1.15; }
+.status-text b { display: block; font-weight: 400; font-size: calc(1.4 * var(--u)); color: var(--hl); }
+.status-text small { font-size: calc(.95 * var(--u)); color: var(--muted); }
+.b-latest { display: flex; flex-direction: column; justify-content: space-between; padding: calc(1.05 * var(--u)) calc(1.2 * var(--u)) calc(.9 * var(--u)); border-radius: calc(.95 * var(--u)); background: var(--surface);
+  border: 2px solid color-mix(in srgb, var(--purple) 62%, transparent); transition: background-color .15s ease; }
+.b-latest:hover { background: var(--surface-2); }
+.lp-head, .lp-title { font-size: calc(1.45 * var(--u)); line-height: 1.2; color: var(--hl); }
+.lp-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lp-line { height: 1px; background: var(--border-strong); margin: calc(.7 * var(--u)) 0; }
+.lp-date { font-size: calc(.96 * var(--u)); color: var(--muted); }

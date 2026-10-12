@@ -1,0 +1,596 @@
+/* overlays.css
+   Shortcuts popup, terminal popup and toast message. */
+
+
+/* =========================================================
+   OVERLAYS
+   ========================================================= */
+
+.overlay[hidden] {
+  display: none !important;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+
+  background: var(--overlay);
+
+  display: grid;
+  place-items: center;
+
+  padding: 1rem;
+
+  animation: viewIn .18s ease both;
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS POPUP
+   ========================================================= */
+
+.sc-modal {
+  width: 100%;
+  max-width: 29rem;
+  max-height: min(32rem, calc(100vh - 2rem));
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-strong);
+
+  box-shadow: var(--shadow);
+
+  background: color-mix(in srgb, var(--fg) 3%, var(--bg));
+
+  overflow: hidden;
+}
+
+
+/* ---------- Header ---------- */
+
+.sc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1.25rem;
+
+  flex: none;
+
+  min-height: 9.6rem;
+
+  padding: 1.8rem 1.55rem 1.8rem;
+
+  border-bottom: 1px solid var(--border-strong);
+}
+
+
+/* Title */
+
+.sc-head h2 {
+  font-family: inherit;
+  font-weight: 500;
+
+  font-size: 1.28rem;
+  line-height: 1.25;
+
+  color: var(--hl);
+}
+
+
+/* Subtitle */
+
+.sc-head p {
+  margin-top: .65rem;
+
+  font-size: .95rem;
+  line-height: 1.4;
+
+  color: var(--muted);
+}
+
+
+/* ---------- Close button ---------- */
+
+.sc-close {
+  display: grid;
+  place-items: center;
+
+  flex: none;
+
+  width: 2rem;
+  height: 2rem;
+
+  margin: -.15rem .05rem 0 0;
+  padding: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  color: var(--muted);
+  background: transparent;
+
+  transition:
+    color .15s ease,
+    opacity .15s ease,
+    transform .15s ease;
+}
+
+
+/* Hover */
+
+.sc-close:hover {
+  color: var(--hl);
+  background: transparent;
+  opacity: .8;
+}
+
+
+/* Click */
+
+.sc-close:active {
+  transform: scale(.92);
+}
+
+
+/* Keyboard focus */
+
+.sc-close:focus-visible {
+  outline: 2px solid var(--border-strong);
+  outline-offset: 4px;
+
+  border-radius: .3rem;
+
+  color: var(--hl);
+  background: transparent;
+}
+
+
+/* X icon */
+
+.sc-close svg {
+  width: 1.45rem !important;
+  height: 1.45rem !important;
+}
+
+
+/* =========================================================
+   SHORTCUT ROWS
+   ========================================================= */
+
+.sc-rows {
+  list-style: none;
+
+  padding: 0 1.35rem;
+
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+}
+
+
+/* Chrome / Safari scrollbar */
+
+.sc-rows::-webkit-scrollbar {
+  width: .45rem;
+}
+
+.sc-rows::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sc-rows::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+
+/* ---------- Individual shortcut row ---------- */
+
+.sc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  min-height: 5rem;
+
+  padding: 1rem 0;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.sc-item:last-child {
+  border-bottom: 0;
+}
+
+
+/* Shortcut name */
+
+.sc-name {
+  font-size: 1.15rem;
+  font-weight: 400;
+
+  color: var(--hl);
+
+  line-height: 1.3;
+}
+
+
+/* Shortcut description */
+
+.sc-desc {
+  font-size: .9rem;
+
+  color: var(--muted);
+
+  margin-top: .15rem;
+
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   KEYBOARD KEY BOXES
+   ========================================================= */
+
+.sc-keys {
+  display: flex;
+  align-items: center;
+
+  gap: .4rem;
+
+  flex: none;
+}
+
+
+/* "then" text */
+
+.sc-keys .then {
+  font-size: .72rem;
+  color: var(--muted);
+}
+
+
+/* Individual key */
+
+.sc-keys kbd {
+  min-width: 2rem;
+  height: 2rem;
+
+  padding: 0 .5rem;
+
+  display: inline-grid;
+  place-items: center;
+
+  /* Less rounded than before */
+  border-radius: .4rem;
+
+  border: 1px solid var(--border-strong);
+
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+
+  font-family: 'Satoshi', sans-serif;
+
+  font-size: .95rem;
+  font-weight: 500;
+
+  line-height: 1;
+
+  color: var(--hl);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.sc-foot {
+  flex: none;
+
+  border-top: 1px solid var(--border-strong);
+
+  padding: 1rem 1.55rem 1.05rem;
+
+  font-size: .9rem;
+
+  color: var(--muted);
+}
+
+.sc-foot b {
+  color: var(--hl);
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   TERMINAL / GENERIC MODAL
+   ========================================================= */
+
+.modal {
+  width: 100%;
+  max-width: 30rem;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border-strong);
+
+  border-radius: 1rem;
+
+  box-shadow: var(--shadow);
+
+  padding: 1.2rem 1.3rem;
+}
+
+.modal h2 {
+  font-size: 1.5rem;
+  color: var(--hl);
+  margin-bottom: .9rem;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* =========================================================
+   TERMINAL
+   ========================================================= */
+
+.term {
+  max-width: 40rem;
+
+  background: #0d0d0d;
+  color: #d7d9e2;
+
+  border-color: rgba(255,255,255,.14);
+
+  padding: 0;
+
+  overflow: hidden;
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+
+  gap: .4rem;
+
+  padding: .7rem .9rem;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+  font-size: .82rem;
+
+  color: #8a8d99;
+}
+
+.term-bar i {
+  width: .65rem;
+  height: .65rem;
+  border-radius: 50%;
+}
+
+.term-bar i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.term-bar i:nth-child(2) {
+  background: #febc2e;
+}
+
+.term-bar i:nth-child(3) {
+  background: #28c840;
+}
+
+.term-bar span {
+  margin-left: .5rem;
+}
+
+.term-out {
+  height: 17rem;
+
+  overflow-y: auto;
+
+  padding: .9rem 1rem;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: .86rem;
+
+  line-height: 1.55;
+
+  white-space: pre-wrap;
+}
+
+.term-out .cmd {
+  color: #f4f4f8;
+}
+
+.term-out .dim {
+  color: #7c7f8d;
+}
+
+.term-in {
+  display: flex;
+
+  gap: .55rem;
+
+  padding: .7rem 1rem .9rem;
+
+  border-top: 1px solid rgba(255,255,255,.08);
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: .86rem;
+}
+
+.term-in input {
+  flex: 1;
+
+  background: none;
+
+  border: 0;
+
+  color: #f4f4f8;
+
+  font: inherit;
+
+  outline: none;
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 1.6rem;
+
+  transform: translateX(-50%);
+
+  z-index: 60;
+
+  background: var(--fg);
+  color: var(--bg);
+
+  padding: .6rem 1rem;
+
+  border-radius: .7rem;
+
+  font-size: .92rem;
+
+  box-shadow: var(--shadow);
+
+  max-width: calc(100vw - 2rem);
+
+  animation: viewIn .18s ease both;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 34rem) {
+
+  .sc-modal {
+    max-height: calc(100vh - 1.5rem);
+
+    border-radius: 1rem;
+  }
+
+
+  /* Header */
+
+  .sc-head {
+    min-height: 8.5rem;
+
+    padding: 1.35rem 1.15rem 1.5rem;
+  }
+
+
+  /* Header title */
+
+  .sc-head h2 {
+    font-size: 1.15rem;
+  }
+
+
+  /* Header description */
+
+  .sc-head p {
+    font-size: .85rem;
+  }
+
+
+  /* Close button */
+
+  .sc-close {
+    width: 1.8rem;
+    height: 1.8rem;
+
+    margin-top: -.1rem;
+  }
+
+  .sc-close svg {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+  }
+
+
+  /* Rows */
+
+  .sc-rows {
+    padding: 0 1.15rem;
+  }
+
+
+  /* Individual row */
+
+  .sc-item {
+    min-height: 5rem;
+
+    padding: 1rem 0;
+  }
+
+
+  /* Row text */
+
+  .sc-name {
+    font-size: 1.05rem;
+  }
+
+  .sc-desc {
+    font-size: .85rem;
+  }
+
+
+  /* Keys */
+
+  .sc-keys kbd {
+    min-width: 1.9rem;
+    height: 1.9rem;
+
+    border-radius: .35rem;
+
+    font-size: .9rem;
+  }
+
+
+  /* Footer */
+
+  .sc-foot {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+}

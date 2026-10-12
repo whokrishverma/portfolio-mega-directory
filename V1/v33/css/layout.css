@@ -1,0 +1,31 @@
+/* layout.css
+   Navigation bar, dropdown menu, page views and page/section titles. */
+
+/* ---------- Nav ---------- */
+.nav { display: flex; align-items: center; justify-content: space-between; padding-top: 1.9rem; gap: 1rem; }
+.nav-left, .nav-right { display: flex; align-items: center; gap: .2rem; }
+.pill { display: inline-flex; align-items: center; gap: .35rem; padding: .5rem .9rem; border-radius: .8rem; font-size: 1.05rem;
+  color: var(--fg); transition: background-color .15s ease; }
+.pill:hover { background: var(--surface); }
+.pill.active { background: var(--surface-2); }
+.menu-wrap { position: relative; margin-left: .55rem; }
+.menu-btn svg { transition: transform .2s ease; }
+.menu-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.dropdown { position: absolute; top: calc(100% + .45rem); left: 0; min-width: 11.5rem; padding: .35rem; background: var(--surface);
+  border: 1px solid var(--border); border-radius: .8rem; box-shadow: var(--shadow); z-index: 20; }
+.dropdown a { display: flex; align-items: center; justify-content: space-between; padding: .5rem .7rem; border-radius: .55rem; font-size: .95rem; color: var(--fg); }
+.dropdown a:hover { background: var(--surface-2); }
+.dropdown a span { color: var(--muted); font-size: .8rem; }
+.shortcuts-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: .6rem; color: var(--muted); font-size: .95rem; }
+.shortcuts-btn:hover { color: var(--fg); }
+kbd { display: inline-grid; place-items: center; min-width: 1.4rem; height: 1.4rem; padding: 0 .3rem; border: 1px solid var(--border-strong); border-radius: .4rem;
+  font: inherit; font-size: .8rem; color: var(--muted); }
+.icon-btn { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: .6rem; color: var(--fg); }
+.icon-btn:hover { background: var(--surface); }
+[data-theme="dark"] .i-moon, [data-theme="light"] .i-sun { display: none; }
+
+/* ---------- Views ---------- */
+.view { padding-top: 5.2rem; animation: viewIn .28s ease both; }
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
+h1.page-title { font-size: 2.35rem; line-height: 1.05; letter-spacing: -.005em; color: var(--hl); }
+h2.section-title { font-size: 1.75rem; line-height: 1.1; color: var(--hl); }
