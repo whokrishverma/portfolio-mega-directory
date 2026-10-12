@@ -1,0 +1,7 @@
+/* dots.css - layer for the dotted glow background (js/dots.js) */
+[data-dots] { position: relative; }
+[data-dots] > *:not(.dots-bg) { position: relative; z-index: 1; }
+.dots-bg { position: absolute; inset: -1.5rem 0; z-index: 0; pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse farthest-corner at center, #000 0%, transparent 90%);
+          mask-image: radial-gradient(ellipse farthest-corner at center, #000 0%, transparent 90%); }
+.dots-bg canvas { display: block; }

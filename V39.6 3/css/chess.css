@@ -1,0 +1,32 @@
+/* chess.css - Chess page */
+.chess-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem}
+.chess-btn{height:2.5rem;padding:0 1.1rem;border-radius:.7rem;display:inline-flex;align-items:center;background:var(--hl);color:var(--bg);font-size:.94rem}
+.chess-btn--ghost{background:var(--surface-3);color:var(--fg)}
+.chess-note{margin-top:1rem;font-size:.9rem;color:var(--muted)}
+.chess-h{margin-top:2.6rem;margin-bottom:1rem}
+.chess-profile{display:flex;gap:1rem;align-items:center;margin-top:1.6rem;padding:1rem;border:1px solid var(--border);border-radius:.9rem;background:var(--surface)}
+.chess-profile img{width:4rem;height:4rem;border-radius:.7rem;object-fit:cover}
+.chess-profile b{color:var(--hl);font-size:1.1rem}.chess-profile span{display:block;color:var(--muted);font-size:.88rem;margin-top:.15rem}
+.chess-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:.7rem}
+.chess-card{padding:.9rem;border:1px solid var(--border);border-radius:.8rem;background:var(--surface)}
+.chess-card small{color:var(--muted);font-size:.8rem;text-transform:capitalize}
+.chess-card strong{display:block;font-size:1.7rem;color:var(--hl);margin:.15rem 0}
+.chess-card span{font-size:.78rem;color:var(--muted)}
+.chess-record{display:grid;gap:.9rem}
+.chess-rec-row small{display:flex;justify-content:space-between;font-size:.86rem;color:var(--muted);margin-bottom:.3rem;text-transform:capitalize}
+.chess-bar{display:flex;height:.55rem;border-radius:1rem;overflow:hidden;background:var(--surface-3)}
+.chess-bar i{display:block}.chess-bar .w{background:var(--green)}.chess-bar .d{background:var(--muted)}.chess-bar .l{background:#e5484d}
+.chess-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:.8rem}
+.chess-table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:34rem}
+.chess-table th,.chess-table td{padding:.65rem .8rem;text-align:left;border-bottom:1px solid var(--border)}
+.chess-table th{color:var(--muted);font-weight:400;font-size:.8rem}
+.chess-table tr:last-child td{border-bottom:0}
+.chess-res{font-weight:600}.chess-res.W{color:var(--green)}.chess-res.L{color:#e5484d}.chess-res.D{color:var(--muted)}
+.chess-skel{color:var(--muted);padding:.8rem}
+.chess-sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.8rem}
+.chess-set{border:1px solid var(--border);border-radius:.9rem;overflow:hidden;background:var(--surface)}
+.chess-set-img{aspect-ratio:4/3;background:var(--surface-2);display:grid;place-items:center;font-size:3rem}
+.chess-set-img img{width:100%;height:100%;object-fit:cover}
+.chess-set-body{padding:.9rem}.chess-set-body b{color:var(--hl)}
+.chess-set-body em{display:block;font-style:normal;color:var(--muted);font-size:.8rem;margin:.15rem 0 .5rem}
+.chess-set-body p{font-size:.9rem;line-height:1.5}

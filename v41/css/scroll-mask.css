@@ -1,0 +1,67 @@
+/* scroll-mask.css
+   A soft fade at the bottom edge of the screen, on every page: content dissolves into the
+   page background as it scrolls out of view instead of being cut off by a hard edge.
+
+   HOW IT WORKS
+   Two fixed, click-through layers are pinned to the bottom of the viewport:
+     body::after   the fade itself (page-background colour -> transparent, eased curve)
+     body::before  optional progressive blur (content gets softer as it nears the edge)
+
+   ======================================================================================
+   TWEAK EVERYTHING HERE - only edit the numbers in this block.
+   ====================================================================================== */
+:root {
+  --scroll-mask-height: 8rem;       /* how tall the fade is (try 4rem subtle ... 12rem dramatic) */
+  --scroll-mask-strength: 1;        /* 0 = invisible ... 1 = content fully hidden at the very edge */
+  --scroll-mask-color: var(--bg);   /* fade colour. Keep var(--bg) so it follows light/dark theme */
+  --scroll-mask-blur: 6px;          /* progressive blur at the edge. 0px = no blur */
+  --scroll-mask-blur-height: 60%;   /* how much of the mask height the blur covers (10% - 100%) */
+  --scroll-mask-z: 40;              /* stacking: above page content, below popups (50+) */
+  --scroll-mask-hide-at-bottom: 1;  /* 1 = mask fades away once you reach the page end so the footer
+                                       is fully readable, 0 = always on */
+  --scroll-mask-fade-speed: .3s;    /* speed of that fade-away */
+}
+/* Turn it off completely (e.g. for one page): add data-scroll-mask="off" on <html>,
+   or delete the <link> to this file in index.html. */
+html[data-scroll-mask="off"] body::before,
+html[data-scroll-mask="off"] body::after { display: none; }
+/* ====================================================================================== */
+
+body::before, body::after {
+  content: '';
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: calc(var(--scroll-mask-height) + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;                       /* never blocks clicks or text selection */
+  z-index: var(--scroll-mask-z);
+  transition: opacity var(--scroll-mask-fade-speed) ease;
+}
+/* The fade: an eased ("scrim") gradient looks far smoother than a straight linear one. */
+body::after {
+  --s: var(--scroll-mask-strength);
+  --c: var(--scroll-mask-color);
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--c) calc(var(--s) * 100%),  transparent) 0%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 98.7%), transparent) 8%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 92%),   transparent) 20%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 74%),   transparent) 38%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 45%),   transparent) 56%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 20%),   transparent) 74%,
+    color-mix(in srgb, var(--c) calc(var(--s) * 5%),    transparent) 89%,
+    transparent 100%);
+}
+/* The optional blur: strongest at the edge, gone by --scroll-mask-blur-height. */
+body::before {
+  height: calc((var(--scroll-mask-height) + env(safe-area-inset-bottom, 0px)) * 1);
+  -webkit-backdrop-filter: blur(var(--scroll-mask-blur));
+  backdrop-filter: blur(var(--scroll-mask-blur));
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent var(--scroll-mask-blur-height));
+  mask-image: linear-gradient(to top, #000 0%, transparent var(--scroll-mask-blur-height));
+}
+/* Browsers without color-mix keep working: they just get no fade rather than a broken one. */
+
+/* js/scroll-mask.js adds .at-page-bottom to <html> when the very end of the page is reached. */
+html.at-page-bottom.scroll-mask-hides body::before,
+html.at-page-bottom.scroll-mask-hides body::after { opacity: 0; }
+
+@media print { body::before, body::after { display: none; } }

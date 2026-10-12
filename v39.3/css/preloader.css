@@ -1,0 +1,87 @@
+/* preloader.css
+   Cinematic loading layer. Sits on top of the real page (already rendered
+   underneath) and dissolves away once the greeting sequence finishes.
+   Scoped entirely to #preloader / html.is-loading / html.pl-revealing so it
+   never touches the site's own typography, layout or colour tokens. */
+
+/* ---------- Lock scroll while active ---------- */
+html.is-loading,
+html.is-loading body { overflow: hidden; height: 100%; }
+
+/* ---------- Dim + blur the real page underneath ---------- */
+html.is-loading .bg,
+html.is-loading .light-stars,
+html.is-loading .container {
+  filter: blur(15px) brightness(.32) saturate(.85);
+  opacity: .82;
+}
+.bg, .light-stars, .container {
+  transition: filter 1s cubic-bezier(.22, 1, .36, 1), opacity 1s cubic-bezier(.22, 1, .36, 1);
+}
+html.is-loading #cursorDot { opacity: 0; }
+
+/* ---------- Overlay shell ---------- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+  transition: opacity .9s cubic-bezier(.22, 1, .36, 1);
+}
+html:not(.is-loading) #preloader { opacity: 0; pointer-events: none; }
+
+/* ---------- Logo + greeting ---------- */
+.pl-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+  text-align: center;
+  padding: 0 1.5rem;
+  transition: opacity .55s ease, transform .55s ease;
+}
+html.pl-revealing .pl-content { opacity: 0; transform: scale(1.045); }
+
+.pl-greet { position: relative; height: 5.5rem; min-width: 14rem; }
+.pl-word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 8vw, 4.5rem);
+  color: #f5f6fb;
+  opacity: 0;
+  filter: blur(20px);
+  transform: scale(.85);
+  white-space: nowrap;
+  transition: 
+    opacity .34s cubic-bezier(.22, 1, .36, 1), 
+    filter .34s cubic-bezier(.22, 1, .36, 1), 
+    transform .34s cubic-bezier(.22, 1, .36, 1);
+}
+.pl-word.is-active { opacity: 1; filter: blur(0); transform: scale(1); }
+
+/* ---------- Small screens ---------- */
+@media (max-width: 560px) {
+  .pl-content { gap: .85rem; }
+  .pl-greet { height: 3.6rem; }
+}
+
+/* ---------- Reduced motion: skip the choreography, reveal fast ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .pl-word { transition: opacity .2s linear !important; filter: none !important; transform: none !important; }
+  #preloader,
+  html.is-loading .bg, html.is-loading .light-stars, html.is-loading .container,
+  .bg, .light-stars, .container {
+    transition-duration: .25s !important;
+  }
+}

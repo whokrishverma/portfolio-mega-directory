@@ -1,0 +1,21 @@
+/* dots.css - dotted glow decoration (js/dots.js).
+   Two fixed strips on the left and right edges of the site. Dots are full strength at the
+   screen edge and fade out toward the centre. */
+[data-dots] { position: relative; }
+.dots-bg { position: absolute; inset: 0; pointer-events: none; }
+.dots-bg canvas { display: block; }
+
+[data-dots].dots-side { position: fixed; top: 0; bottom: 0; z-index: -1; pointer-events: none;
+  width: clamp(7rem, 22vw, 20rem); }              /* <- strip width */
+.dots-side--left  { left: 0; }
+.dots-side--right { right: 0; }
+.dots-side--left  .dots-bg { -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 100%);
+                                     mask-image: linear-gradient(to right, #000 0%, transparent 100%); }
+.dots-side--right .dots-bg { -webkit-mask-image: linear-gradient(to left,  #000 0%, transparent 100%);
+                                     mask-image: linear-gradient(to left,  #000 0%, transparent 100%); }
+
+@media (max-width: 700px) { .dots-side { display: none; } }   /* phones: too little room */
+
+
+.dots-side { opacity: 0; animation: dotsIn 1.5s ease 3s forwards; }
+@keyframes dotsIn { to { opacity: 1; } }

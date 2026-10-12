@@ -1,0 +1,174 @@
+/* agent-view.css
+   Agent View: a full-screen "second layer" of the site, opened by the ghost control (bottom-right).
+
+   HOW IT WORKS
+   Two layers are coordinated by one class on <html>:
+     .container      the website shell (nav, views, bento, footer). Stays mounted the whole time.
+     .agent-view     the second layer, fixed and full-viewport, outside .container.
+   html.agent-open    = Agent View is the target state. Removing it plays the exact reverse.
+   html.agent-anim    = a transition is in flight (set by js/agent-view.js). All animation rules
+                        live under it, so nothing here touches the page at rest, and the
+                        preloader's own .container transitions are left alone.
+
+   Stacking: scroll-mask 40 < agent view 45 < ghost 46 < popups 50 < toast 60 < cursor 9999.
+   ====================================================================================== */
+:root {
+  --av-ease: cubic-bezier(.32, .72, 0, 1);      /* smooth, no overshoot */
+  --av-ease-soft: cubic-bezier(.4, 0, .2, 1);
+  --ghost-size: 2.75rem;
+  --ghost-inset: 1.25rem;
+  --ghost-glow: rgba(255, 255, 255, .22);
+}
+:root[data-theme="light"] { --ghost-glow: rgba(70, 80, 170, .28); }
+
+/* ---------- Ghost control ---------- */
+.agent-ghost {
+  position: fixed;
+  right: calc(var(--ghost-inset) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--ghost-inset) + env(safe-area-inset-bottom, 0px));
+  z-index: 46;
+  width: var(--ghost-size);
+  padding: 0;
+  display: block;
+  border-radius: .8rem;
+  opacity: .6;
+  transform-origin: 50% 70%;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .4s var(--av-ease), opacity .4s var(--av-ease-soft), filter .4s var(--av-ease-soft);
+}
+.agent-ghost::after { content: ''; position: absolute; inset: -.5rem; }   /* larger touch target */
+.agent-ghost img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+@media (hover: hover) {
+  .agent-ghost:hover { opacity: 1; transform: scale(1.07); filter: brightness(1.06) drop-shadow(0 0 .7rem var(--ghost-glow)); }
+}
+.agent-ghost:active, .agent-ghost.is-pressed { opacity: .8; transform: scale(.93); filter: none; transition-duration: .12s; }
+.agent-ghost:focus-visible { opacity: 1; outline-offset: 4px; }
+html.agent-open .agent-ghost { opacity: .7; }
+/* Hidden while the preloader is up. */
+html.is-loading .agent-ghost { opacity: 0; pointer-events: none; }
+
+@media (max-width: 720px) {
+  :root { --ghost-size: 2.5rem; --ghost-inset: 1rem; }
+}
+
+/* ---------- Agent View layer ---------- */
+.agent-view {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  color: var(--fg);
+  /* resting state = closed */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  filter: blur(10px);
+  transform: translate3d(0, 1rem, 0) scale(1.012);
+}
+.agent-view:focus { outline: none; }
+/* A faint glow in the corner the ghost lives in, so the doorway and the room feel connected. */
+.agent-view::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(44rem 30rem at 100% 100%, color-mix(in srgb, var(--purple) 9%, transparent), transparent 70%);
+}
+html.agent-open .agent-view {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  filter: blur(0);
+  transform: none;
+}
+
+.agent-view__inner {
+  position: relative;
+  max-width: 57rem;
+  margin: 0 auto;
+  padding: clamp(5rem, 19vh, 11rem) 1.25rem calc(7rem + env(safe-area-inset-bottom, 0px));
+}
+/* >>> Replace what is inside .agent-view__content with the real Agent View content. <<< */
+.agent-view__content { max-width: 36rem; }
+.agent-view__title { font-size: clamp(2.35rem, 6.2vw, 3.6rem); line-height: 1.02; letter-spacing: -.01em; color: var(--hl); }
+.agent-view__meta { margin-top: 1.1rem; font-size: .95rem; color: var(--muted); }
+.agent-view__lead { margin-top: 2.2rem; font-size: 1.2rem; line-height: 1.5; color: var(--fg); }
+.agent-view__content p + p:not(.agent-view__lead) { margin-top: .7rem; color: var(--muted); }
+.agent-view__content > * { opacity: 0; transform: translate3d(0, .9rem, 0); filter: blur(6px); }
+html.agent-open .agent-view__content > * { opacity: 1; transform: none; filter: blur(0); }
+.agent-view__content > :nth-child(1) { --i: 0; }
+.agent-view__content > :nth-child(2) { --i: 1; }
+.agent-view__content > :nth-child(3) { --i: 2; }
+.agent-view__content > :nth-child(4) { --i: 3; }
+.agent-view__content > :nth-child(n+5) { --i: 4; }
+
+/* ---------- The transition (only while html.agent-anim is set) ---------- */
+/* Closed state = the "return" direction. The website comes back a beat after Agent View starts to leave. */
+html.agent-anim .container {
+  will-change: transform, filter, opacity;
+  transition:
+    filter .75s var(--av-ease) .16s,
+    opacity .6s var(--av-ease-soft) .16s,
+    transform .85s var(--av-ease) .1s,
+    visibility 0s linear 0s;
+}
+html.agent-anim .agent-view {
+  will-change: transform, filter, opacity;
+  transition:
+    opacity .5s var(--av-ease-soft) 0s,
+    filter .55s var(--av-ease) 0s,
+    transform .65s var(--av-ease) 0s,
+    visibility 0s linear .65s;
+}
+html.agent-anim .agent-view__content > * {
+  transition: opacity .3s var(--av-ease-soft) 0s, transform .45s var(--av-ease) 0s, filter .35s var(--av-ease) 0s;
+}
+
+/* Away state of the website: recedes, softens, drifts up. Hidden entirely once the transition ends. */
+html.agent-open .container {
+  filter: blur(6px) brightness(.94);
+  opacity: 0;
+  transform: translate3d(0, -.75rem, 0) scale(.985);
+  visibility: hidden;
+}
+/* Open direction: the website lets go first, then Agent View emerges and its content settles in sequence. */
+html.agent-anim.agent-open .container {
+  transition:
+    filter .7s var(--av-ease) 0s,
+    opacity .5s var(--av-ease-soft) .2s,
+    transform .8s var(--av-ease) 0s,
+    visibility 0s linear .75s;
+}
+html.agent-anim.agent-open .agent-view {
+  transition:
+    opacity .55s var(--av-ease-soft) .14s,
+    filter .7s var(--av-ease) .14s,
+    transform .85s var(--av-ease) .14s,
+    visibility 0s linear 0s;
+}
+html.agent-anim.agent-open .agent-view__content > * {
+  transition:
+    opacity .7s var(--av-ease-soft) calc(.4s + var(--i, 0) * 80ms),
+    transform .9s var(--av-ease) calc(.4s + var(--i, 0) * 80ms),
+    filter .8s var(--av-ease) calc(.4s + var(--i, 0) * 80ms);
+}
+
+/* ---------- Reduced motion: no spatial movement or blur, just a short opacity change ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .agent-view, .agent-view__content > *,
+  html.agent-open .container, html.agent-open .agent-view, html.agent-open .agent-view__content > * {
+    filter: none; transform: none;
+  }
+  html.agent-anim .container,
+  html.agent-anim .agent-view,
+  html.agent-anim.agent-open .container,
+  html.agent-anim.agent-open .agent-view { transition: opacity .2s linear, visibility 0s linear .2s !important; will-change: auto; }
+  html.agent-anim.agent-open .agent-view { transition: opacity .2s linear, visibility 0s linear 0s !important; }
+  html.agent-anim .agent-view__content > *,
+  html.agent-anim.agent-open .agent-view__content > * { transition: none !important; }
+  .agent-view__content > * { opacity: 1; }
+  .agent-ghost { transition: opacity .2s linear !important; }
+  .agent-ghost:hover, .agent-ghost:active, .agent-ghost.is-pressed { transform: none; filter: none; }
+}
