@@ -1,0 +1,12 @@
+{
+  "name": "wkv-portfolio",
+  "private": true,
+  "description": "Static portfolio site with a serverless visitor-counter API (Vercel + Upstash Redis).",
+  "scripts": {
+    "build": "node scripts/build-posts.js",
+    "dev": "node scripts/build-posts.js --watch"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.38.4"
+  }
+}

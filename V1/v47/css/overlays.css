@@ -1,0 +1,368 @@
+/* overlays.css
+   Shortcuts popup, terminal popup and toast message. */
+
+.overlay[hidden] {
+  display: none !important;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--overlay);
+  display: grid;
+  place-items: center;
+  padding: 11px 16px;
+  animation: viewIn .18s ease both;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* =========================================================
+   KEYBOARD SHORTCUTS POPUP
+   ========================================================= */
+
+.sc-modal {
+  width: min(350px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, .58);
+  background: #090a0c;
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.sc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex: none;
+  box-sizing: border-box;
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, .10);
+}
+
+.sc-head-copy { min-width: 0; }
+
+.sc-head h2 {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 400;
+  font-size: 15.5px;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: #f3f3f6;
+}
+
+.sc-head p {
+  margin: 13px 0 0;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 12.4px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: #96979f;
+}
+
+/* ---------- Close button ---------- */
+
+.sc-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  margin: -14px -11px 0 0;
+  padding: 0;
+  border: 2px solid #d9d9dc;
+  border-radius: 9px;
+  color: #a9a9ae;
+  background: #090a0c;
+  box-sizing: border-box;
+  transition: color .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.sc-close:hover { color: #e8e8eb; border-color: #fff; }
+.sc-close:active { transform: scale(.96); }
+.sc-close:focus-visible { outline: none; color: #e8e8eb; border-color: #fff; }
+
+.sc-close svg {
+  width: 17px !important;
+  height: 17px !important;
+  stroke-width: 1.8;
+}
+
+/* =========================================================
+   SHORTCUT ROWS
+   ========================================================= */
+
+.sc-rows {
+  list-style: none;
+  padding: 0 8px;
+  margin: 0;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sc-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 56px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+
+.sc-item:first-child { height: 60px; }
+.sc-item:last-child { height: 60px; border-bottom: 0; }
+
+.sc-copy { min-width: 0; }
+
+.sc-name {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14.7px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -.018em;
+  color: #e9e9ed;
+}
+
+.sc-desc {
+  margin-top: 4px;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 11.2px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  color: #7f8088;
+}
+
+/* =========================================================
+   KEYBOARD KEY BOXES
+   ========================================================= */
+
+.sc-keys {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+}
+
+.sc-keys .then { font-size: 10px; color: #7f8088; }
+
+.sc-keys kbd {
+  min-width: 25px;
+  height: 25px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #3f4047;
+  background: #17181c;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1;
+  color: #d8d8dd;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.sc-foot {
+  flex: none;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, .10);
+  padding: 14px 20px 13px;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 11.2px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  color: #777880;
+}
+
+.sc-foot b { color: #a7a8ae; font-weight: 400; }
+
+/* ---------- Terminal / generic modal ---------- */
+
+.modal {
+  width: 100%;
+  max-width: 30rem;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.2rem 1.3rem;
+}
+
+.modal h2 {
+  font-size: 1.5rem;
+  color: var(--hl);
+  margin-bottom: .9rem;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =========================================================
+   TERMINAL
+   ========================================================= */
+
+.term {
+  width: 100%;
+  max-width: 56rem;
+  max-height: calc(100vh - 2rem);
+  background: #0d0d0d;
+  color: #d7d9e2;
+  border-color: rgba(255,255,255,.14);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .7rem .9rem;
+
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+
+  font-size: .82rem;
+
+  color: #8a8d99;
+}
+
+.term-bar i {
+  width: .65rem;
+  height: .65rem;
+  border-radius: 50%;
+}
+
+.term-bar i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.term-bar i:nth-child(2) {
+  background: #febc2e;
+}
+
+.term-bar i:nth-child(3) {
+  background: #28c840;
+}
+
+.term-bar span {
+  margin-left: .5rem;
+}
+
+.term-out {
+  flex: 1;
+  height: min(32rem, 60vh);
+  min-height: 12rem;
+
+  overflow-y: auto;
+
+  padding: .9rem 1rem;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: .86rem;
+
+  line-height: 1.55;
+
+  white-space: pre-wrap;
+}
+
+.term-out .cmd {
+  color: #f4f4f8;
+}
+
+.term-out .dim {
+  color: #7c7f8d;
+}
+
+.term-in {
+  display: flex;
+
+  gap: .55rem;
+
+  padding: .7rem 1rem .9rem;
+
+  border-top: 1px solid rgba(255,255,255,.08);
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: .86rem;
+}
+
+.term-in input {
+  flex: 1;
+
+  background: none;
+
+  border: 0;
+
+  color: #f4f4f8;
+
+  font: inherit;
+
+  outline: none;
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast {
+  position: fixed;
+
+  left: 50%;
+  bottom: 1.6rem;
+
+  transform: translateX(-50%);
+
+  z-index: 60;
+
+  background: var(--fg);
+  color: var(--bg);
+
+  padding: .6rem 1rem;
+
+  border-radius: .7rem;
+
+  font-size: .92rem;
+
+  box-shadow: var(--shadow);
+
+  max-width: calc(100vw - 2rem);
+
+  animation: viewIn .18s ease both;
+}
